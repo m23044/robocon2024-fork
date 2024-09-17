@@ -1,18 +1,18 @@
 #include "../controller/Controller.h"
 #include <Arduino.h>
-#include <Servo.h>
 #include <TimerOne.h>
 #include <components/ims/ImReceiver.h>
 #include <components/motors/BD62193.h>
 #include <components/motors/TB67H450.h>
+#include <components/servos/MG90S.h>
 
 #define ONE_LEVEL_DEGREE 45
 
 Controller controller;
 
 // 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PB1, PB2
-Servo armL;
-Servo armR;
+MG90S armL;
+MG90S armR;
 TB67H450 motorL(PD2, PD4);
 TB67H450 motorR(PD7, PB0);
 BD62193 jumpper(PC3, PC2);
