@@ -8,7 +8,7 @@
 
 Controller controller;
 
-// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
+// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PB1, PB2
 Servo armL;
 Servo armR;
 TB67H450 motorL(PD2, PD4);
@@ -28,6 +28,8 @@ void setup() {
   Timer1.initialize(500000); // 0.5秒ごとに割り込みを発生させる
   Timer1.attachInterrupt(emergencyStop); // 割り込みハンドラを設定
   Timer1.start();                        // 割り込みを開始
+  armL.attach(PB1);                      // サーボモータLをPB1に接続
+  armR.attach(PB2);                      // サーボモータRをPB2に接続
 }
 
 void loop() {}
