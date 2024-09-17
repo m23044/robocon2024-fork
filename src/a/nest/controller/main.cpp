@@ -2,13 +2,13 @@
 #include "components/ims/ImSender.h"
 #include <Arduino.h>
 
-// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
-#define PULL_PIN PD2
+// 使用可能なピン: PD3、PD4、PD5、PD6、PD7、PB0、PC0、PC1、PC2、PC3、PC4、PC5
+#define PULL_PIN PD3
 #define LOOSEN_MOTOR_PIN PD4
-#define FORWARD_L_PIN PD7
-#define REVERSE_L_PIN PB0
-#define FORWARD_R_PIN PC3
-#define REVERSE_R_PIN PC2
+#define FORWARD_L_PIN PD5
+#define REVERSE_L_PIN PD6
+#define FORWARD_R_PIN PD7
+#define REVERSE_R_PIN PB0
 
 // setup関数は、プログラムの開始時に一度だけ実行される。
 void setup() {

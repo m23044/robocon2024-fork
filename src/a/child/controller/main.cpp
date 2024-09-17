@@ -4,15 +4,15 @@
 #include <components/ims/ImSender.h> // liboshima(大島商船用ライブラリ)のImSender.hを取得
 
 // #defineでピン番号に別名をつける
-// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
-#define HOLD_PIN PD2 // PD2ピンをHOLD_PINとして定義（PD2は定数2を意味する）
+// 使用可能なピン: PD3、PD4、PD5、PD6、PD7、PB0、PC0、PC1、PC2、PC3、PC4、PC5
+#define HOLD_PIN PD3 // PD3ピンをHOLD_PINとして定義（PD3は定数3を意味する）
 #define RELEASE_PIN PD4
-#define PULL_PIN PD7
-#define PUSH_PIN PB0
-#define FORWARD_L_PIN PC3
-#define REVERSE_L_PIN PC2
-#define FORWARD_R_PIN PC1
-#define REVERSE_R_PIN PC0
+#define PULL_PIN PD5
+#define PUSH_PIN PD6
+#define FORWARD_L_PIN PD7
+#define REVERSE_L_PIN PB0
+#define FORWARD_R_PIN PC0
+#define REVERSE_R_PIN PC1
 
 // 1度だけ実行される
 void setup() {

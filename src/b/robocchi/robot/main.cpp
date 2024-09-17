@@ -18,8 +18,8 @@ BD62193 jumpper(PC3, PC2);
 void emergencyStop() {
   motorL.stop();
   motorR.stop();
-  armL.write(45 * controller.armLevel);
-  armR.write(-45 * controller.armLevel);
+  armL.write(45 * controller.armLevelL);
+  armR.write(45 * controller.armLevelR);
   jumpper.stop();
   Timer1.stop();
 }
@@ -59,6 +59,6 @@ void serialEvent() {
   else
     jumpper.stop();
 
-  armL.write(45 * controller.armLevel);
-  armR.write(-45 * controller.armLevel);
+  armL.write(45 * controller.armLevelL);
+  armR.write(45 * controller.armLevelR);
 }

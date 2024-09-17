@@ -2,15 +2,15 @@
 #include "components/ims/ImSender.h"
 #include <Arduino.h>
 
-// ピンの定義。これらはマイクロコントローラの特定のピン番号を表す。
-#define FORWARD_L_PIN PIN_PD3      // 左側のタイヤの前進ピン
-#define REVERSE_L_PIN PIN_PD4      // 左側のタイヤの後退ピン
-#define FORWARD_R_PIN PIN_PD5      // 右側のタイヤの前進ピン
-#define REVERSE_R_PIN PIN_PD6      // 右側のタイヤの後退ピン
-#define JUMP_PIN PIN_PD7           // ジャンパーのピン
-#define JUMP_SET_UP_PIN PIN_PB0    // ジャンパーの準備ピン
-#define SHOOTER_PIN PIN_PB1        // シューターのピン
-#define SHOOTER_SET_UP_PIN PIN_PB2 // シューターの準備ピン
+// 使用可能なピン: PD3、PD4、PD5、PD6、PD7、PB0、PC0、PC1、PC2、PC3、PC4、PC5
+#define FORWARD_L_PIN PD3
+#define REVERSE_L_PIN PD4
+#define FORWARD_R_PIN PD5
+#define REVERSE_R_PIN PD6
+#define JUMP_PIN PD7
+#define JUMP_SET_UP_PIN PB0
+#define SHOOT_PIN PC0
+#define SHOOT_SET_UP_PIN PC1
 
 // setup関数は、プログラムの開始時に一度だけ実行される。
 void setup() {
@@ -21,8 +21,8 @@ void setup() {
   pinMode(REVERSE_R_PIN, INPUT_PULLUP);
   pinMode(JUMP_PIN, INPUT_PULLUP);
   pinMode(JUMP_SET_UP_PIN, INPUT_PULLUP);
-  pinMode(SHOOTER_PIN, INPUT_PULLUP);
-  pinMode(SHOOTER_SET_UP_PIN, INPUT_PULLUP);
+  pinMode(SHOOT_PIN, INPUT_PULLUP);
+  pinMode(SHOOT_SET_UP_PIN, INPUT_PULLUP);
 }
 
 // loop関数は、プログラムが停止するまで繰り返し実行される。
@@ -37,8 +37,8 @@ void loop() {
   controller.reverseR = !digitalRead(REVERSE_R_PIN);
   controller.jump = !digitalRead(JUMP_PIN);
   controller.jumpSetUp = !digitalRead(JUMP_SET_UP_PIN);
-  controller.shoot = !digitalRead(SHOOTER_PIN);
-  controller.shootSetUp = !digitalRead(SHOOTER_SET_UP_PIN);
+  controller.shoot = !digitalRead(SHOOT_PIN);
+  controller.shootSetUp = !digitalRead(SHOOT_SET_UP_PIN);
 
   static ImSender imSender(Serial);
   imSender.send(controller);

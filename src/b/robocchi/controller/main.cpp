@@ -3,23 +3,27 @@
 #include <Arduino.h>
 #include <components/ims/ImSender.h>
 
-// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
-#define REVERSE_L_PIN PD2
+// 使用可能なピン: PD3、PD4、PD5、PD6、PD7、PB0、PC0、PC1、PC2、PC3、PC4、PC5
+#define REVERSE_L_PIN PD3
 #define FORWARD_L_PIN PD4
-#define REVERSE_R_PIN PD7
-#define FORWARD_R_PIN PB0
-#define ARM_CATCH_PIN PC3
-#define ARM_RELEASE_PIN PC2
-#define JUMP_PIN PC1
-#define JUMP_READY_PIN PC0
+#define REVERSE_R_PIN PD5
+#define FORWARD_R_PIN PD6
+#define ARM_CATCH_L_PIN PD7
+#define ARM_RELEASE_L_PIN PB0
+#define ARM_CATCH_R_PIN PC0
+#define ARM_RELEASE_R_PIN PC1
+#define JUMP_PIN PC2
+#define JUMP_READY_PIN PC3
 
 void setup() {
   pinMode(REVERSE_L_PIN, INPUT_PULLUP);
   pinMode(FORWARD_L_PIN, INPUT_PULLUP);
   pinMode(REVERSE_R_PIN, INPUT_PULLUP);
   pinMode(FORWARD_R_PIN, INPUT_PULLUP);
-  pinMode(ARM_CATCH_PIN, INPUT_PULLUP);
-  pinMode(ARM_RELEASE_PIN, INPUT_PULLUP);
+  pinMode(ARM_CATCH_L_PIN, INPUT_PULLUP);
+  pinMode(ARM_RELEASE_L_PIN, INPUT_PULLUP);
+  pinMode(ARM_CATCH_R_PIN, INPUT_PULLUP);
+  pinMode(ARM_RELEASE_R_PIN, INPUT_PULLUP);
   pinMode(JUMP_PIN, INPUT_PULLUP);
   pinMode(JUMP_READY_PIN, INPUT_PULLUP);
 }
@@ -34,14 +38,20 @@ void loop() {
   controller.jumpReady = !digitalRead(JUMP_READY_PIN);
 
   ArmButtons servoBtns;
-  servoBtns.armCatch = !digitalRead(ARM_CATCH_PIN);
-  servoBtns.armRelease = !digitalRead(ARM_RELEASE_PIN);
+  servoBtns.armCatchL = !digitalRead(ARM_CATCH_L_PIN);
+  servoBtns.armReleaseL = !digitalRead(ARM_RELEASE_L_PIN);
+  servoBtns.armCatchR = !digitalRead(ARM_CATCH_R_PIN);
+  servoBtns.armReleaseR = !digitalRead(ARM_RELEASE_R_PIN);
 
   static ArmButtons prevServoBtns;
-  if (!prevServoBtns.armCatch && servoBtns.armCatch)
-    controller.incrementArmLevel();
-  else if (!prevServoBtns.armRelease && servoBtns.armRelease)
-    controller.decrementArmLevel();
+  if (!prevServoBtns.armCatchL && servoBtns.armCatchL)
+    controller.incrementArmLevelL();
+  else if (!prevServoBtns.armReleaseL && servoBtns.armReleaseL)
+    controller.decrementArmLevelL();
+  if (!prevServoBtns.armCatchR && servoBtns.armCatchR)
+    controller.incrementArmLevelR();
+  else if (!prevServoBtns.armReleaseR && servoBtns.armReleaseR)
+    controller.decrementArmLevelR();
 
   static ImSender imSender(Serial);
   imSender.send(controller);
