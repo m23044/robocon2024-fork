@@ -18,7 +18,6 @@ int currentHookDegree = HOOK_DEGREE;
 void emergencyStop() {
   tireL.stop(); // 左側のモーターを停止させる
   tireR.stop(); // 右側のモーターを停止させる
-  hooker.write(currentHookDegree);
 }
 
 void setup() {
