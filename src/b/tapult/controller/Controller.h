@@ -8,6 +8,6 @@ struct Controller {
   unsigned int reverseL : 1;
   unsigned int forwardR : 1;
   unsigned int reverseR : 1;
-}
+};
 
 #endif // CONTROLLER_H
