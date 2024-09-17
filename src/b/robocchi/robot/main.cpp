@@ -6,6 +6,8 @@
 #include <components/motors/BD62193.h>
 #include <components/motors/TB67H450.h>
 
+#define ONE_LEVEL_DEGREE 45
+
 Controller controller;
 
 // 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PB1, PB2
@@ -23,7 +25,8 @@ void emergencyStop() {
 }
 
 void setup() {
-  Timer1.initialize(500000); // 0.5秒ごとに割り込みを発生させる
+  // 0.5秒ごとに割り込みを発生させる
+  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);
   Timer1.attachInterrupt(emergencyStop); // 割り込みハンドラを設定
   Timer1.start();                        // 割り込みを開始
   armL.attach(PB1);                      // サーボモータLをPB1に接続
@@ -31,8 +34,8 @@ void setup() {
 }
 
 void loop() {
-  armL.write(45 * controller.armLevelL);
-  armR.write(45 * controller.armLevelR);
+  armL.write(ONE_LEVEL_DEGREE * controller.armLevelL);
+  armR.write(ONE_LEVEL_DEGREE * controller.armLevelR);
 }
 
 void serialEvent() {
