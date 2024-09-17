@@ -46,10 +46,17 @@ void loop() {}
 
 void serialEvent() {
   Timer1.restart(); // タイマーをリスタート
-
   Controller controller;
   static ImReceiver receiver(Serial); // 受信機の初期化
-  receiver.receive(controller); // コントローラーの変更を読み込む
+
+  // コントローラーの変更を読み込む
+  ImReceiver::ErrorCode errorCode = receiver.receive(controller);
+  if (errorCode != ImReceiver::ErrorCode::SUCCESS) {
+    tireL.forward();
+    tireR.reverse();
+    holder.forward();
+    puller.reverse();
+  }
 
   // コントローラーの状態に応じてモーターを制御
   if (controller.forwardL) {
