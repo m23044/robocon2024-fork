@@ -26,13 +26,10 @@ TB67H450 puller = TB67H450(PIN_PC1, PIN_PC0);
 
 // 緊急停止用の関数
 void emergencyStop() {
-  // 無限ループ
-  while (true) {
-    tireL.stop();
-    tireR.stop();
-    holder.stop();
-    puller.stop();
-  }
+  tireL.stop();
+  tireR.stop();
+  holder.stop();
+  puller.stop();
 }
 
 void setup() {
