@@ -23,6 +23,8 @@ void emergencyStop() {
 void setup() {
   Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS); // タイマーを初期化
   Timer1.attachInterrupt(emergencyStop); // タイマー割り込みを設定
+  Timer1.start();                        // タイマーを開始
+  hooker.attach(PIN_PC3);                // フックをPC3に接続
 }
 
 void loop() { hooker.write(currentHookDegree); }
