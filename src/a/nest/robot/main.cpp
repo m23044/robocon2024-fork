@@ -19,7 +19,8 @@ void emergencyStop() {
 }
 
 void setup() {
-  Timer1.initialize(500000); // 0.5秒ごとに割り込みを発生させる
+  // 0.5秒ごとに割り込みを発生させる
+  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);
   Timer1.attachInterrupt(emergencyStop); // 割り込みハンドラを設定
   Timer1.start();                        // 割り込みを開始
 }

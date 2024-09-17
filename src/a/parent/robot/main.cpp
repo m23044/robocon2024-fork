@@ -19,7 +19,7 @@ void emergencyStop() {
 }
 
 void setup() {
-  Timer1.initialize(500000);             // タイマーを初期化
+  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS); // タイマーを初期化
   Timer1.attachInterrupt(emergencyStop); // タイマー割り込みを設定
 }
 
