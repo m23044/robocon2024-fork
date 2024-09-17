@@ -37,7 +37,7 @@ void loop() {
   Controller controller;
 
   // コントローラーの状態を読み取る
-  // controller変数は変数の集まりなので、各変数には「.」を使ってアクセスする
+  // controller変数は変数の集まりで、各変数には「.」を使ってアクセスする
   // 『!digitalRead(HOLD_PIN)』はボタンが押されている(いない)時に1(0)になる
   controller.forwardL = !digitalRead(FORWARD_L_PIN);
   controller.reverseL = !digitalRead(REVERSE_L_PIN);
