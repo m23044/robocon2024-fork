@@ -6,7 +6,8 @@
 #include <components/motors/BD62193.h>  // liboshimaのBD62193.hを取得
 #include <components/motors/TB67H450.h> // liboshimaのTB67H450.hを取得
 
-// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
+// 使用可能なピン:
+// PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC0、PIN_PC1、PIN_PC2、PIN_PC3
 /*
   TB67H450型の変数を定義している。
   TB67H450型はint型と違い複雑な型であるため、int型の様に数字1つで初期化することはできない。
