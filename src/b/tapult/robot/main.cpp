@@ -9,15 +9,19 @@
 #define HOOK_DEGREE 45
 
 // 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
+/*
 TB67H450 tireL = TB67H450(PIN_PD2, PIN_PD4); // 左側のモーターを初期化
 TB67H450 tireR = TB67H450(PIN_PD7, PIN_PB0); // 右側のモーターを初期化
-MG90S hooker;                                // フックを初期化
+*/
+MG90S hooker; // フックを初期化
 
 int currentHookDegree = HOOK_DEGREE;
 
 void emergencyStop() {
-  tireL.stop(); // 左側のモーターを停止させる
+  /*
+    tireL.stop(); // 左側のモーターを停止させる
   tireR.stop(); // 右側のモーターを停止させる
+  */
 }
 
 void setup() {
