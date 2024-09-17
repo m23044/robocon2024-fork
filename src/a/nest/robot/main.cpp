@@ -8,7 +8,7 @@
 // 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PC1, PC0
 BD62193 caterpillarL(PD2, PD4);
 BD62193 caterpillarR(PD7, PB0);
-BD62193 launcher(PC3, PC2);
+TB67H450 launcher(PC3, PC2);
 TB67H450 loader(PC1, PC0);
 
 void emergencyStop() {
