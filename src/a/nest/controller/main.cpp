@@ -2,25 +2,29 @@
 #include "components/ims/ImSender.h"
 #include <Arduino.h>
 
-// 使用可能なピン: PD3、PD4、PD5、PD6、PD7、PB0、PC0、PC1、PC2、PC3、PC4、PC5
-#define PULL_PIN PD3
-#define LOOSEN_MOTOR_PIN PD4
-#define FORWARD_L_PIN PD5
-#define REVERSE_L_PIN PD6
-#define FORWARD_R_PIN PD7
-#define REVERSE_R_PIN PB0
+// 使用可能なピン定数；
+// PIN_PD3、PIN_PD4、PIN_PD5、PIN_PD6、PIN_PD7、PIN_PB0、PIN_PB1、PIN_PB2、
+// PIN_PC0、PIN_PC1、PIN_PC2、PIN_PC3、PIN_PC4、PIN_PC5
+#define FORWARD_L_PIN PIN_PD3
+#define REVERSE_L_PIN PIN_PD4
+#define FORWARD_R_PIN PIN_PD5
+#define REVERSE_R_PIN PIN_PD6
+#define LOAD_PIN PIN_PD7
+#define LOAD_SET_UP_PIN PIN_PB0
+#define LAUNCH_PIN PIN_PB1
+#define LAUNCH_SET_UP_PIN PIN_PB2
 
 // setup関数は、プログラムの開始時に一度だけ実行される。
 void setup() {
   // ピンのモードを設定する。INPUT_PULLUPは入力モードを意味する。
-  pinMode(PULL_PIN,
-          INPUT_PULLUP); // ゴムを引っ張るモーターを入力モードに設定
-  pinMode(LOOSEN_MOTOR_PIN,
-          INPUT_PULLUP); // ゴムを緩めるモーターを入力モードに設定
-  pinMode(FORWARD_L_PIN, INPUT_PULLUP); // FORWARD_L_PINを入力モードに設定
-  pinMode(REVERSE_L_PIN, INPUT_PULLUP); // REVERSE_L_PINを入力モードに設定
-  pinMode(FORWARD_R_PIN, INPUT_PULLUP); // FORWARD_R_PINを入力モードに設定
-  pinMode(REVERSE_R_PIN, INPUT_PULLUP); // REVERSE_R_PINを入力モードに設定
+  pinMode(FORWARD_L_PIN, INPUT_PULLUP);
+  pinMode(REVERSE_L_PIN, INPUT_PULLUP);
+  pinMode(FORWARD_R_PIN, INPUT_PULLUP);
+  pinMode(REVERSE_R_PIN, INPUT_PULLUP);
+  pinMode(LOAD_PIN, INPUT_PULLUP);
+  pinMode(LOAD_SET_UP_PIN, INPUT_PULLUP);
+  pinMode(LAUNCH_PIN, INPUT_PULLUP);
+  pinMode(LAUNCH_SET_UP_PIN, INPUT_PULLUP);
 }
 
 // loop関数は、プログラムが停止するまで繰り返し実行される。
@@ -33,10 +37,10 @@ void loop() {
   controller.reverseL = !digitalRead(REVERSE_L_PIN);
   controller.forwardR = !digitalRead(FORWARD_R_PIN);
   controller.reverseR = !digitalRead(REVERSE_R_PIN);
-  controller.load = !digitalRead(PULL_PIN);
-  controller.loadSetUp = !digitalRead(LOOSEN_MOTOR_PIN);
-  controller.launch = !digitalRead(PULL_PIN);
-  controller.launchSetUp = !digitalRead(LOOSEN_MOTOR_PIN);
+  controller.load = !digitalRead(LOAD_PIN);
+  controller.loadSetUp = !digitalRead(LOAD_SET_UP_PIN);
+  controller.launch = !digitalRead(LAUNCH_PIN);
+  controller.launchSetUp = !digitalRead(LAUNCH_SET_UP_PIN);
 
   // 無条件でコントローラの状態を送信
   static ImSender imSender(Serial);
