@@ -33,9 +33,10 @@ void emergencyStop() {
   puller.stop();
 }
 
+// setup1回だけ実行される
 void setup() {
   // 0.5秒のタイマーを設定
-  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);
+  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);  // Timer1.initialize(0.5);
   // タイマーが0.5秒経過したらemergencyStop関数を呼び出すように設定
   Timer1.attachInterrupt(emergencyStop);
   // タイマーをスタート
@@ -47,16 +48,10 @@ void loop() {}
 void serialEvent() {
   Timer1.restart(); // タイマーをリスタート
   Controller controller;
-  static ImReceiver receiver(Serial); // 受信機の初期化
+  static ImReceiver receiver(Serial); // 受信機の初期化 int a = 1;
 
   // コントローラーの変更を読み込む
-  ImReceiver::ErrorCode errorCode = receiver.receive(controller);
-  if (errorCode != ImReceiver::ErrorCode::SUCCESS) {
-    tireL.forward();
-    tireR.reverse();
-    holder.forward();
-    puller.reverse();
-  }
+  receiver.receive(controller);
 
   // コントローラーの状態に応じてモーターを制御
   if (controller.forwardL) {

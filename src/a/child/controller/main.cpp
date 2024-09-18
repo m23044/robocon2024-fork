@@ -34,12 +34,12 @@ void setup() {
 void loop() {
   // コントローラー変数を作成
   // int a; と同じ意味
-  Controller controller;
+  Controller controller; //Controller複数の変数でできている
 
   // コントローラーの状態を読み取る
   // controller変数は変数の集まりで、各変数には「.」を使ってアクセスする
   // 『!digitalRead(HOLD_PIN)』はボタンが押されている(いない)時に1(0)になる
-  controller.forwardL = !digitalRead(FORWARD_L_PIN);
+  controller.forwardL = !digitalRead(FORWARD_L_PIN); //controllerのforwardLにアクセスする
   controller.reverseL = !digitalRead(REVERSE_L_PIN);
   controller.forwardR = !digitalRead(FORWARD_R_PIN);
   controller.reverseR = !digitalRead(REVERSE_R_PIN);
@@ -51,9 +51,9 @@ void loop() {
   // IM920SLの送信機の変数を作成
   // staticはその変数が関数の呼び出しのたびに初期化されないようにする
   // つまりこの場合、sender変数は1度だけ初期化される
-  static ImSender sender(Serial);
+  static ImSender sender(Serial); //ImSender型のsender変数を宣言する
   // コントローラーの状態を送信
-  sender.send(controller);
+  sender.send(controller); //imでコントローラーの状態を送信している
   // 60ミリ秒待機
-  delay(IM_SEND_INTERVAL);
+  delay(IM_SEND_INTERVAL); // delay(60);
 }
