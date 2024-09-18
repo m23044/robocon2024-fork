@@ -23,7 +23,7 @@ void setup() {
   Timer1.attachInterrupt(emergencyStop); // タイマー割り込みを設定
 }
 
-void loop() {}
+void loop() {}//繰り返す
 
 void serialEvent() {
   Timer1.restart(); // タイマーを再起動
