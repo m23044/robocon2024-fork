@@ -18,7 +18,7 @@
   TB67H450 tireL = TB67H450(PIN_PD2,PIN_PD4);
   でTB67H450型のtireL変数を作成し、 PIN_PD2とPIN_PD4で初期化する。
 
-  TB67H450はモータドライバの型番で、このモータドライバを扱うには、3つのピンが必要なのだ。
+  TB67H450はモータドライバの型番で、このモータドライバを扱うには、2つのピンが必要なのだ。
 */
 TB67H450 tireL = TB67H450(PIN_PD2, PIN_PD4);
 TB67H450 tireR = TB67H450(PIN_PD7, PIN_PB0);
