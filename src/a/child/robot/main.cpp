@@ -36,7 +36,7 @@ void emergencyStop() {
 // setup1回だけ実行される
 void setup() {
   // 0.5秒のタイマーを設定
-  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);  // Timer1.initialize(0.5);
+  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS); // Timer1.initialize(0.5);
   // タイマーが0.5秒経過したらemergencyStop関数を呼び出すように設定
   Timer1.attachInterrupt(emergencyStop);
   // タイマーをスタート
