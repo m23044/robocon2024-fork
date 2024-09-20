@@ -10,12 +10,13 @@
 
 Controller controller;
 
-// 使用可能なピン: PD2, PD4, PD7, PB0, PC3, PC2, PB1, PB2
+// 使用可能なピン:
+// PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、PIN_PB1、PIN_PB2
 MG90S armL;
 MG90S armR;
-TB67H450 motorL(PD2, PD4);
-TB67H450 motorR(PD7, PB0);
-BD62193 jumpper(PC3, PC2);
+TB67H450 motorL(PIN_PD2, PIN_PD4);
+TB67H450 motorR(PIN_PC2, PIN_PC3);
+TB67H450 jumpper(PIN_PD7, PIN_PB0);
 
 void emergencyStop() {
   motorL.stop();
@@ -29,8 +30,8 @@ void setup() {
   Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);
   Timer1.attachInterrupt(emergencyStop); // 割り込みハンドラを設定
   Timer1.start();                        // 割り込みを開始
-  armL.attach(PB1);                      // サーボモータLをPB1に接続
-  armR.attach(PB2);                      // サーボモータRをPB2に接続
+  armL.attach(PIN_PB1);
+  armR.attach(PIN_PB2);
 }
 
 void loop() {
@@ -40,7 +41,6 @@ void loop() {
 
 void serialEvent() {
   Timer1.restart(); // 割り込みを再開
-
   static ImReceiver imReceiver(Serial);
   imReceiver.receive(controller);
 
