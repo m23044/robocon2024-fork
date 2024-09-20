@@ -10,7 +10,7 @@
 
 // 使用可能なピン:
 // PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、PIN_PB1、PIN_PB2
-/*
+/*ロボットの制作状況に応に応じて有効にするか検討
 TB67H450 tireL = TB67H450(PIN_PD2, PIN_PD4); // 左側のモーターを初期化
 TB67H450 tireR = TB67H450(PIN_PD7, PIN_PB0); // 右側のモーターを初期化
 */
@@ -19,8 +19,8 @@ MG90S hooker; // フックを初期化
 int currentHookDegree = HOOK_DEGREE;
 
 void emergencyStop() {
-  /*
-    tireL.stop(); // 左側のモーターを停止させる
+  /*ロボットの制作状況に応に応じて有効にするか検討
+  tireL.stop(); // 左側のモーターを停止させる
   tireR.stop(); // 右側のモーターを停止させる
   */
 }
@@ -42,7 +42,7 @@ void serialEvent() {
   static ImReceiver receiver(Serial);
   receiver.receive(controller); // コントローラーの状態を受信
 
-  /*
+  /*ロボットの制作状況に応に応じて有効にするか検討
   // コントローラーの状態に応じてモーターを制御
   if (controller.forwardL) {
     tireL.forward();

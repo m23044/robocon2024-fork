@@ -5,7 +5,7 @@
 // 使用可能なピン定数；
 // PIN_PD3、PIN_PD4、PIN_PD5、PIN_PD6、PIN_PD7、PIN_PB0、PIN_PB1、PIN_PB2、
 // PIN_PC0、PIN_PC1、PIN_PC2、PIN_PC3、PIN_PC4、PIN_PC5
-/*
+/*ロボットの制作状況に応に応じて有効にするか検討
 #define FORWARD_L_PIN PIN_PD3
 #define REVERSE_L_PIN PIN_PD4
 #define FORWARD_R_PIN PIN_PD5
@@ -16,7 +16,7 @@
 
 void setup() {
   // 各ピンをINPUT_PULLUPに設定する。これにより、ピンがHIGHになる。
-  /*
+  /*ロボットの制作状況に応に応じて有効にするか検討
   pinMode(FORWARD_L_PIN, INPUT_PULLUP);
   pinMode(REVERSE_L_PIN, INPUT_PULLUP);
   pinMode(FORWARD_R_PIN, INPUT_PULLUP);
@@ -28,7 +28,7 @@ void setup() {
 
 void loop() {
   static Controller controller;
-  /*
+  /*ロボットの制作状況に応に応じて有効にするか検討
   controller.forwardL = !digitalRead(FORWARD_L_PIN);
   controller.reverseL = !digitalRead(REVERSE_L_PIN);
   controller.forwardR = !digitalRead(FORWARD_R_PIN);
