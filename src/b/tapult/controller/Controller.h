@@ -8,6 +8,7 @@ struct Controller {
   unsigned int reverseR : 1;
   unsigned int hook : 1;
   unsigned int unhook : 1;
+  unsigned int padding : 2;
 };
 
 #endif // CONTROLLER_H
