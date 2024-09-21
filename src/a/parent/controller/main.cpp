@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include "components/ims/ImSender.h"
 #include <Arduino.h>
+#include <digitalWriteFast.h>
 
 // 使用可能なピン定数；
 // PIN_PD3、PIN_PD4、PIN_PD5、PIN_PD6、PIN_PD7、PIN_PB0、PIN_PB1、PIN_PB2、
@@ -17,14 +18,14 @@
 // setup関数は、プログラムの開始時に一度だけ実行される。
 void setup() {
   // 各ピンをINPUT_PULLUPに設定する。これにより、ピンがHIGHになる。
-  pinMode(FORWARD_L_PIN, INPUT_PULLUP);
-  pinMode(REVERSE_L_PIN, INPUT_PULLUP);
-  pinMode(FORWARD_R_PIN, INPUT_PULLUP);
-  pinMode(REVERSE_R_PIN, INPUT_PULLUP);
-  pinMode(JUMP_PIN, INPUT_PULLUP);
-  pinMode(JUMP_SET_UP_PIN, INPUT_PULLUP);
-  pinMode(SHOOT_PIN, INPUT_PULLUP);
-  pinMode(SHOOT_SET_UP_PIN, INPUT_PULLUP);
+  pinModeFast(FORWARD_L_PIN, INPUT_PULLUP);
+  pinModeFast(REVERSE_L_PIN, INPUT_PULLUP);
+  pinModeFast(FORWARD_R_PIN, INPUT_PULLUP);
+  pinModeFast(REVERSE_R_PIN, INPUT_PULLUP);
+  pinModeFast(JUMP_PIN, INPUT_PULLUP);
+  pinModeFast(JUMP_SET_UP_PIN, INPUT_PULLUP);
+  pinModeFast(SHOOT_PIN, INPUT_PULLUP);
+  pinModeFast(SHOOT_SET_UP_PIN, INPUT_PULLUP);
 }
 
 // loop関数は、プログラムが停止するまで繰り返し実行される。
@@ -33,14 +34,14 @@ void loop() {
   Controller controller;
 
   // 各ピンの状態を読み取り、controllerオブジェクトに保存する
-  controller.forwardL = !digitalRead(FORWARD_L_PIN);
-  controller.reverseL = !digitalRead(REVERSE_L_PIN);
-  controller.forwardR = !digitalRead(FORWARD_R_PIN);
-  controller.reverseR = !digitalRead(REVERSE_R_PIN);
-  controller.jump = !digitalRead(JUMP_PIN);
-  controller.jumpSetUp = !digitalRead(JUMP_SET_UP_PIN);
-  controller.shoot = !digitalRead(SHOOT_PIN);
-  controller.shootSetUp = !digitalRead(SHOOT_SET_UP_PIN);
+  controller.forwardL = !digitalReadFast(FORWARD_L_PIN);
+  controller.reverseL = !digitalReadFast(REVERSE_L_PIN);
+  controller.forwardR = !digitalReadFast(FORWARD_R_PIN);
+  controller.reverseR = !digitalReadFast(REVERSE_R_PIN);
+  controller.jump = !digitalReadFast(JUMP_PIN);
+  controller.jumpSetUp = !digitalReadFast(JUMP_SET_UP_PIN);
+  controller.shoot = !digitalReadFast(SHOOT_PIN);
+  controller.shootSetUp = !digitalReadFast(SHOOT_SET_UP_PIN);
 
   static ImSender imSender(Serial);
   imSender.send(controller);

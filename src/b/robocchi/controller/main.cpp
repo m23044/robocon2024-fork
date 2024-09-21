@@ -2,6 +2,7 @@
 #include "Controller.h"
 #include <Arduino.h>
 #include <components/ims/ImSender.h>
+#include <digitalWriteFast.h>
 
 // 使用可能なピン定数；
 // PIN_PD3、PIN_PD4、PIN_PD5、PIN_PD6、PIN_PD7、PIN_PB0、PIN_PB1、PIN_PB2、
@@ -18,32 +19,32 @@
 #define JUMP_READY_PIN PIN_PC1
 
 void setup() {
-  pinMode(FORWARD_L_PIN, INPUT_PULLUP);
-  pinMode(REVERSE_L_PIN, INPUT_PULLUP);
-  pinMode(FORWARD_R_PIN, INPUT_PULLUP);
-  pinMode(REVERSE_R_PIN, INPUT_PULLUP);
-  pinMode(ARM_CATCH_L_PIN, INPUT_PULLUP);
-  pinMode(ARM_RELEASE_L_PIN, INPUT_PULLUP);
-  pinMode(ARM_CATCH_R_PIN, INPUT_PULLUP);
-  pinMode(ARM_RELEASE_R_PIN, INPUT_PULLUP);
-  pinMode(JUMP_PIN, INPUT_PULLUP);
-  pinMode(JUMP_READY_PIN, INPUT_PULLUP);
+  pinModeFast(FORWARD_L_PIN, INPUT_PULLUP);
+  pinModeFast(REVERSE_L_PIN, INPUT_PULLUP);
+  pinModeFast(FORWARD_R_PIN, INPUT_PULLUP);
+  pinModeFast(REVERSE_R_PIN, INPUT_PULLUP);
+  pinModeFast(ARM_CATCH_L_PIN, INPUT_PULLUP);
+  pinModeFast(ARM_RELEASE_L_PIN, INPUT_PULLUP);
+  pinModeFast(ARM_CATCH_R_PIN, INPUT_PULLUP);
+  pinModeFast(ARM_RELEASE_R_PIN, INPUT_PULLUP);
+  pinModeFast(JUMP_PIN, INPUT_PULLUP);
+  pinModeFast(JUMP_READY_PIN, INPUT_PULLUP);
 }
 
 void loop() {
   static Controller controller;
-  controller.forwardL = !digitalRead(FORWARD_L_PIN);
-  controller.reverseL = !digitalRead(REVERSE_L_PIN);
-  controller.forwardR = !digitalRead(FORWARD_R_PIN);
-  controller.reverseR = !digitalRead(REVERSE_R_PIN);
-  controller.jump = !digitalRead(JUMP_PIN);
-  controller.jumpReady = !digitalRead(JUMP_READY_PIN);
+  controller.forwardL = !digitalReadFast(FORWARD_L_PIN);
+  controller.reverseL = !digitalReadFast(REVERSE_L_PIN);
+  controller.forwardR = !digitalReadFast(FORWARD_R_PIN);
+  controller.reverseR = !digitalReadFast(REVERSE_R_PIN);
+  controller.jump = !digitalReadFast(JUMP_PIN);
+  controller.jumpReady = !digitalReadFast(JUMP_READY_PIN);
 
   ArmButtons servoBtns;
-  servoBtns.armCatchL = !digitalRead(ARM_CATCH_L_PIN);
-  servoBtns.armReleaseL = !digitalRead(ARM_RELEASE_L_PIN);
-  servoBtns.armCatchR = !digitalRead(ARM_CATCH_R_PIN);
-  servoBtns.armReleaseR = !digitalRead(ARM_RELEASE_R_PIN);
+  servoBtns.armCatchL = !digitalReadFast(ARM_CATCH_L_PIN);
+  servoBtns.armReleaseL = !digitalReadFast(ARM_RELEASE_L_PIN);
+  servoBtns.armCatchR = !digitalReadFast(ARM_CATCH_R_PIN);
+  servoBtns.armReleaseR = !digitalReadFast(ARM_RELEASE_R_PIN);
 
   static ArmButtons prevServoBtns;
   if (!prevServoBtns.armCatchL && servoBtns.armCatchL)

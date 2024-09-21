@@ -1,6 +1,7 @@
 #include "Controller.h"
 #include "components/ims/ImSender.h"
 #include <Arduino.h>
+#include <digitalWriteFast.h>
 
 // 使用可能なピン定数；
 // PIN_PD3、PIN_PD4、PIN_PD5、PIN_PD6、PIN_PD7、PIN_PB0、PIN_PB1、PIN_PB2、
@@ -17,14 +18,14 @@
 // setup関数は、プログラムの開始時に一度だけ実行される。
 void setup() {
   // ピンのモードを設定する。INPUT_PULLUPは入力モードを意味する。
-  pinMode(FORWARD_L_PIN, INPUT_PULLUP);
-  pinMode(REVERSE_L_PIN, INPUT_PULLUP);
-  pinMode(FORWARD_R_PIN, INPUT_PULLUP);
-  pinMode(REVERSE_R_PIN, INPUT_PULLUP);
-  pinMode(LOAD_PIN, INPUT_PULLUP);
-  pinMode(LOAD_SET_UP_PIN, INPUT_PULLUP);
-  pinMode(LAUNCH_PIN, INPUT_PULLUP);
-  pinMode(LAUNCH_SET_UP_PIN, INPUT_PULLUP);
+  pinModeFast(FORWARD_L_PIN, INPUT_PULLUP);
+  pinModeFast(REVERSE_L_PIN, INPUT_PULLUP);
+  pinModeFast(FORWARD_R_PIN, INPUT_PULLUP);
+  pinModeFast(REVERSE_R_PIN, INPUT_PULLUP);
+  pinModeFast(LOAD_PIN, INPUT_PULLUP);
+  pinModeFast(LOAD_SET_UP_PIN, INPUT_PULLUP);
+  pinModeFast(LAUNCH_PIN, INPUT_PULLUP);
+  pinModeFast(LAUNCH_SET_UP_PIN, INPUT_PULLUP);
 }
 
 // loop関数は、プログラムが停止するまで繰り返し実行される。
@@ -33,14 +34,14 @@ void loop() {
   Controller controller;
 
   // コントローラの状態を読み取る。
-  controller.forwardL = !digitalRead(FORWARD_L_PIN);
-  controller.reverseL = !digitalRead(REVERSE_L_PIN);
-  controller.forwardR = !digitalRead(FORWARD_R_PIN);
-  controller.reverseR = !digitalRead(REVERSE_R_PIN);
-  controller.load = !digitalRead(LOAD_PIN);
-  controller.loadSetUp = !digitalRead(LOAD_SET_UP_PIN);
-  controller.launch = !digitalRead(LAUNCH_PIN);
-  controller.launchSetUp = !digitalRead(LAUNCH_SET_UP_PIN);
+  controller.forwardL = !digitalReadFast(FORWARD_L_PIN);
+  controller.reverseL = !digitalReadFast(REVERSE_L_PIN);
+  controller.forwardR = !digitalReadFast(FORWARD_R_PIN);
+  controller.reverseR = !digitalReadFast(REVERSE_R_PIN);
+  controller.load = !digitalReadFast(LOAD_PIN);
+  controller.loadSetUp = !digitalReadFast(LOAD_SET_UP_PIN);
+  controller.launch = !digitalReadFast(LAUNCH_PIN);
+  controller.launchSetUp = !digitalReadFast(LAUNCH_SET_UP_PIN);
 
   // 無条件でコントローラの状態を送信
   static ImSender imSender(Serial);
