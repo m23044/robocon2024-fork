@@ -52,7 +52,7 @@ void emergencyStop() {
   action1.stop();
   action2.stop();
   action3.stop();
-#if not defined(TAPULT)
+#if !defined(TAPULT)
   action4.stop();
 #endif
 }
