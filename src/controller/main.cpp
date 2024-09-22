@@ -59,7 +59,7 @@ void loop() {
 
   // コントローラーの状態を読み取る
   // controller変数は変数の集まりで、各変数には「.」を使ってアクセスする
-  // 『!digitalReadFast(HOLD_PIN)』はボタンが押されている(いない)時に1(0)になる
+  // 『!digitalReadFast(ACTIONn_n_PIN)』はボタンが押されている(いない)時に1(0)になる
   controller.action1_1 = !digitalReadFast(ACTION1_1_PIN);
   controller.action1_2 = !digitalReadFast(ACTION1_2_PIN);
   controller.action2_1 = !digitalReadFast(ACTION2_1_PIN);
@@ -71,15 +71,13 @@ void loop() {
   controller.action5_1 = !digitalReadFast(ACTION5_1_PIN);
   controller.action5_2 = !digitalReadFast(ACTION5_2_PIN);
 
-  // IM920SLの送信機の変数を作成
-  // staticはその変数が関数の呼び出しのたびに初期化されないようにする
-  // つまりこの場合、sender変数は1度だけ初期化される
   // コントローラーの状態を送信
   im.send(controller); // imでコントローラーの状態を送信している
   // 60ミリ秒待機
   delay(IM_SEND_INTERVAL); // delay(60);
 }
 
+// シリアル通信があった時に実行される
 void serialEvent() {
   digitalWriteFast(EMERGENCY_LED_PIN, LOW); // ランプを点灯
   Timer1.restart();                         // タイマーをリスタート
