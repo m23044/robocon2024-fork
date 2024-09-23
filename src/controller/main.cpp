@@ -50,7 +50,8 @@ void setup() {
   pinModeFast(ACTION4_2_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_1_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_2_PIN, INPUT_PULLUP);
-  pinModeFast(EMERGENCY_LED_PIN, OUTPUT); // ランプを出力に設定
+  // ランプを出力に設定
+  pinModeFast(EMERGENCY_LED_PIN, OUTPUT); 
 
   // IM920SLの初期化
   im.begin();
