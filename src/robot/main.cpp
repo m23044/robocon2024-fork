@@ -110,7 +110,7 @@ void serialEvent() {
     action3.stop();
   }
 
-#if not defined(TAPULT)
+#if !defined(TAPULT)
   if (controller.action4_1) {
     action4.forward();
   } else if (controller.action4_2) {
