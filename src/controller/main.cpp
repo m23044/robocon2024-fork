@@ -1,7 +1,7 @@
 // 他のファイルのプログラムを取得する
 #include "Controller.h" // 同じディレクトリにあるController.hを取得
-#include <Arduino.h> // Arduinoの基本機能を使うためのライブラリ
-#include <TimerOne.h>
+#include <Arduino.h>  // Arduinoの基本機能を使うためのライブラリ
+#include <TimerOne.h> // TimerOneライブラリを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
 #include <digitalWriteFast.h> // digitalWriteFast.hを取得
 
@@ -9,8 +9,7 @@
 // 使用可能なピン定数；
 // PIN_PD3、PIN_PD4、PIN_PD5、PIN_PD6、PIN_PD7、PIN_PB0、PIN_PB1、PIN_PB2、
 // PIN_PC0、PIN_PC1、PIN_PC2、PIN_PC3、PIN_PC4、PIN_PC5
-// PIN_PD3ピンをHOLD_PINとして定義（PD3は定数3を意味する）
-#define ACTION1_1_PIN PIN_PD3
+#define ACTION1_1_PIN PIN_PD3 // PIN_PD3ピンをACTION1_1_PINとして定義
 #define ACTION1_2_PIN PIN_PD4
 #define ACTION2_1_PIN PIN_PD5
 #define ACTION2_2_PIN PIN_PD6
@@ -20,11 +19,20 @@
 #define ACTION4_2_PIN PIN_PB2
 #define ACTION5_1_PIN PIN_PC0
 #define ACTION5_2_PIN PIN_PC1
-#define EMERGENCY_LED_PIN PIN_PC2
-SerialPort serial(Serial); // シリアル通信の設定
-IM920SL im(serial);        // ImSender型のsender変数を宣言する
+#define EMERGENCY_LED_PIN PIN_PC2 // 緊急停止のランプのピン番号
+
+// SerialPort型のserial変数を宣言し、Serial変数で初期化する
+// やっていることは、int a = 1; と同じ
+// イメージ：SerialPort serial = Serial;
+SerialPort serial(Serial);
+
+// ImSender型のsender変数を宣言し、serial変数で初期化する
+// やっていることは、int a = 1; と同じ
+// イメージ：IM920SL im = serial;
+IM920SL im(serial);
 
 // 緊急停止のランプを点灯させる関数
+// 500ミリ秒経過すると、Timer1によって呼び出される
 void emergencyStop() {
   digitalWriteFast(EMERGENCY_LED_PIN, HIGH); // ランプを点灯
 }
@@ -43,19 +51,23 @@ void setup() {
   pinModeFast(ACTION5_1_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_2_PIN, INPUT_PULLUP);
   pinModeFast(EMERGENCY_LED_PIN, OUTPUT); // ランプを出力に設定
-  im.begin();                             // IM920SLの初期化
-  // 1秒のタイマーを設定
+
+  // IM920SLの初期化
+  im.begin();
+
+  // 500ミリ秒のタイマーを設定
   Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);
-  // タイマーが1秒経過したらemergencyStop関数を呼び出すように設定
+  // タイマーが500ミリ秒経過したらemergencyStop関数を呼び出すように設定
   Timer1.attachInterrupt(emergencyStop);
-  Timer1.start(); // タイマーをスタート
+  // タイマーをスタート
+  Timer1.start();
 }
 
 // 繰り返し実行される
 void loop() {
   // コントローラー変数を作成
   // int a; と同じ意味
-  Controller controller; // Controller複数の変数でできている
+  Controller controller;
 
   // コントローラーの状態を読み取る
   // controller変数は変数の集まりで、各変数には「.」を使ってアクセスする
@@ -71,14 +83,16 @@ void loop() {
   controller.action5_1 = !digitalReadFast(ACTION5_1_PIN);
   controller.action5_2 = !digitalReadFast(ACTION5_2_PIN);
 
-  // コントローラーの状態を送信
-  im.send(controller); // imでコントローラーの状態を送信している
-  // 60ミリ秒待機
-  delay(IM_SEND_INTERVAL); // delay(60);
+  // コントローラーの状態をIM920SLを使って送信
+  im.send(controller);
+  // 100ミリ秒待機
+  delay(IM_SEND_INTERVAL);
 }
 
 // シリアル通信があった時に実行される
 void serialEvent() {
-  digitalWriteFast(EMERGENCY_LED_PIN, LOW); // ランプを点灯
-  Timer1.restart();                         // タイマーをリスタート
+  // ランプを消灯
+  digitalWriteFast(EMERGENCY_LED_PIN, LOW);
+  // タイマーのカウントを最初からやり直す
+  Timer1.restart();
 }
