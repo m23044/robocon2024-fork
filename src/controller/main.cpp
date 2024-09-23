@@ -89,7 +89,7 @@ void loop() {
   delay(IM_SEND_INTERVAL);
 }
 
-// シリアル通信があった時に実行される
+// ロボットから返答があった時に呼び出される関数
 void serialEvent() {
   // ランプを消灯
   digitalWriteFast(EMERGENCY_LED_PIN, LOW);
