@@ -1,6 +1,5 @@
 // 他のファイルからプログラムを取得する
 #include "controller/Controller.h" // 一つ上のディレクトリのcontrollerディレクトリのController.hを取得
-#include <Arduino.h>  // Arduinoの基本機能を使うためのライブラリ
 #include <Servo.h>    // サーボモータを使うためのライブラリ
 #include <TimerOne.h> // タイマーを使うためのライブラリ
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
@@ -195,4 +194,12 @@ void serialEvent() {
 
   // コントローラーに受信が完了したことを知らせる
   im.send("Success");
+}
+
+int main() {
+  setup();
+  while (true) {
+    loop();
+  }
+  return 0;
 }

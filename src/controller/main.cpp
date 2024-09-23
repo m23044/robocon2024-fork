@@ -1,7 +1,6 @@
 // 他のファイルのプログラムを取得する
 #include "Controller.h" // 同じディレクトリにあるController.hを取得
-#include <Arduino.h>  // Arduinoの基本機能を使うためのライブラリ
-#include <TimerOne.h> // TimerOneライブラリを取得
+#include <TimerOne.h>   // TimerOneライブラリを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
 #include <digitalWriteFast.h> // digitalWriteFast.hを取得
 
@@ -51,7 +50,7 @@ void setup() {
   pinModeFast(ACTION5_1_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_2_PIN, INPUT_PULLUP);
   // ランプを出力に設定
-  pinModeFast(EMERGENCY_LED_PIN, OUTPUT); 
+  pinModeFast(EMERGENCY_LED_PIN, OUTPUT);
 
   // IM920SLの初期化
   im.begin();
@@ -96,4 +95,12 @@ void serialEvent() {
   digitalWriteFast(EMERGENCY_LED_PIN, LOW);
   // タイマーのカウントを最初からやり直す
   Timer1.restart();
+}
+
+int main() {
+  setup();
+  while (true) {
+    loop();
+  }
+  return 0;
 }
