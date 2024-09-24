@@ -1,6 +1,6 @@
 // 他のファイルのプログラムを取得する
 #include "Controller.h" // 同じディレクトリにあるController.hを取得
-#include <HardwareSerial.h>
+#include <Arduino.h>
 #include <TimerOne.h> // TimerOneライブラリを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
 #include <digitalWriteFast.h> // digitalWriteFast.hを取得
@@ -96,12 +96,4 @@ void serialEvent() {
   digitalWriteFast(EMERGENCY_LED_PIN, LOW);
   // タイマーのカウントを最初からやり直す
   Timer1.restart();
-}
-
-int main() {
-  setup();
-  while (true) {
-    loop();
-  }
-  return 0;
 }
