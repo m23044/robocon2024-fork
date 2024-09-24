@@ -7,7 +7,7 @@
 #include <components/motors/NonSpeedAdjustable.h> // liboshimaのNonSpeedAdjustable.hを取得
 
 // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
 #define ONE_LEVEL_DEGREE 45 // サーボモーターの1段階の角度を45度に設定
 #endif
 
@@ -27,7 +27,7 @@
 // タパルト：PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、[PIN_PB1、PIN_PB2]
 // その他　：PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、[PIN_PC0、PIN_PC1]
 // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
 NonSpeedAdjustable action1(PIN_PD2, PIN_PD4);
 NonSpeedAdjustable action2(PIN_PD7, PIN_PB0);
 NonSpeedAdjustable action3(PIN_PC3, PIN_PC2);
@@ -46,7 +46,7 @@ IM920SL im(serial);        // IM920SL im = serial;
 Controller controller;     // int a;
 
 // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
 uint8_t level1 = 0;
 uint8_t level2 = 0;
 #endif
@@ -59,7 +59,7 @@ void emergencyStop() {
   action3.stop();
 
   // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
-#if !defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   action4.stop();
 #endif
 }
@@ -77,14 +77,14 @@ void setup() {
   im.begin();
 
   // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   action4.attach(PIN_PB1); // サーボモータ1をPIN_PB1に接続
   action5.attach(PIN_PB2); // サーボモータ2をPIN_PB2に接続
 #endif
 }
 
 void loop() {
-#if defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   action4.write(ONE_LEVEL_DEGREE * level1);
   action5.write(ONE_LEVEL_DEGREE * level2);
 #endif
@@ -145,7 +145,7 @@ void serialEvent() {
   }
 
   // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
-#if !defined(TAPULT) // TAPULTはplatformio.iniの57行目で定義されている
+#if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   // もしaction4_1ボタンが押されていたら
   if (controller.action4_1) {
     // action4を前進させる
