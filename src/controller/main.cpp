@@ -17,9 +17,9 @@
 #define ACTION3_2_PIN PIN_PB0
 #define ACTION4_1_PIN PIN_PB1
 #define ACTION4_2_PIN PIN_PB2
-#define ACTION5_1_PIN PIN_PC0
+#define ACTION5_1_PIN PIN_PC2
 #define ACTION5_2_PIN PIN_PC1
-#define EMERGENCY_LED_PIN PIN_PC2 // 緊急停止のランプのピン番号
+#define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
 
 // SerialPort型のserial変数を宣言し、Serial変数で初期化する
 // やっていることは、int a = 1; と同じ
@@ -34,7 +34,7 @@ IM920SL im(serial);
 // 緊急停止のランプを点灯させる関数
 // 500ミリ秒経過すると、Timer1によって呼び出される
 void emergencyStop() {
-  digitalWriteFast(EMERGENCY_LED_PIN, HIGH); // ランプを点灯
+  digitalWriteFast(CONNECT_LED_PIN, LOW); // ランプを消灯
 }
 
 // 1度だけ実行される
@@ -51,7 +51,7 @@ void setup() {
   pinModeFast(ACTION5_1_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_2_PIN, INPUT_PULLUP);
   // ランプを出力に設定
-  pinModeFast(EMERGENCY_LED_PIN, OUTPUT);
+  pinModeFast(CONNECT_LED_PIN, OUTPUT);
 
   // IM920SLの初期化
   im.begin();
@@ -92,8 +92,8 @@ void loop() {
 
 // ロボットから返答があった時に呼び出される関数
 void serialEvent() {
-  // ランプを消灯
-  digitalWriteFast(EMERGENCY_LED_PIN, LOW);
+  // ランプを点灯
+  digitalWriteFast(CONNECT_LED_PIN, HIGH);
   // タイマーのカウントを最初からやり直す
   Timer1.restart();
 }
