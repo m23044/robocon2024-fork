@@ -1,6 +1,6 @@
 // 他のファイルからプログラムを取得する
 #include "controller/Controller.h" // 一つ上のディレクトリのcontrollerディレクトリのController.hを取得
-#include <Arduino.h> // Arduino.hを取得
+#include <Arduino.h>               // Arduino.hを取得
 #include <Servo.h>    // サーボモータを使うためのライブラリ
 #include <TimerOne.h> // タイマーを使うためのライブラリ
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
