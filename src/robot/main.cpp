@@ -194,5 +194,6 @@ void serialEvent() {
 #endif
 
   // コントローラーに受信が完了したことを知らせる
-  im.send("Success");
+  // im.send("Succes");だと何故かレスポンスが悪くなるのでSerial.printlnに変更
+  Serial.println("Succes");
 }
