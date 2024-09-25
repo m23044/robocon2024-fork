@@ -194,6 +194,6 @@ void serialEvent() {
 #endif
 
   // コントローラーに受信が完了したことを知らせる
-  im.send("Succes");
+  //im.send("Succes");
   //Serial.println("TXDA 1111");
 }
