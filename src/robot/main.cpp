@@ -1,8 +1,8 @@
 // 他のファイルからプログラムを取得する
 #include "controller/Controller.h" // 一つ上のディレクトリのcontrollerディレクトリのController.hを取得
 #include <Arduino.h>               // Arduino.hを取得
-#include <Servo.h>    // サーボモータを使うためのライブラリ
-#include <TimerOne.h> // タイマーを使うためのライブラリ
+#include <MsTimer2.h>              // MsTimer2.hを取得
+#include <Servo.h> // サーボモータを使うためのライブラリ
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
 #include <components/motors/NonSpeedAdjustable.h> // liboshimaのNonSpeedAdjustable.hを取得
 
@@ -67,11 +67,8 @@ void emergencyStop() {
 // setup1回だけ実行される
 void setup() {
   // 500000マイクロ秒(0.5秒)のタイマーを設定
-  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS); // Timer1.initialize(500000);
-  // タイマーが0.5秒経過したらemergencyStop関数を呼び出すように設定
-  Timer1.attachInterrupt(emergencyStop);
-  // タイマーをスタート
-  Timer1.start();
+  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
+  MsTimer2::start();
 
   // IM920SLの初期化
   im.begin();
@@ -91,7 +88,7 @@ void loop() {
 }
 
 void serialEvent() {
-  Timer1.restart(); // タイマーをリスタート
+  MsTimer2::start();
 
   // コントローラーの変更を読み込む
   im.receive(controller);
