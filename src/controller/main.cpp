@@ -18,7 +18,7 @@
 #define ACTION4_1_PIN PIN_PB1
 #define ACTION4_2_PIN PIN_PB2
 #define ACTION5_1_PIN PIN_PC2
-#define ACTION5_2_PIN PIN_PC1
+#define ACTION5_2_PIN PIN_PC3
 #define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
 
 // SerialPort型のserial変数を宣言し、Serial変数で初期化する
