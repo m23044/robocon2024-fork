@@ -1,7 +1,7 @@
 // 他のファイルのプログラムを取得する
 #include "Controller.h" // 同じディレクトリにあるController.hを取得
 #include <Arduino.h>
-#include <TimerOne.h> // TimerOneライブラリを取得
+#include <MsTimer2.h> // MsTimer2.hを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
 #include <digitalWriteFast.h> // digitalWriteFast.hを取得
 
@@ -34,7 +34,7 @@ IM920SL im(serial);
 // 緊急停止のランプを点灯させる関数
 // 500ミリ秒経過すると、Timer1によって呼び出される
 void emergencyStop() {
-  digitalWriteFast(CONNECT_LED_PIN, LOW); // ランプを消灯
+  digitalWriteFast(CONNECT_LED_PIN, HIGH); // ランプを点灯
 }
 
 // 1度だけ実行される
@@ -56,12 +56,9 @@ void setup() {
   // IM920SLの初期化
   im.begin();
 
-  // 500ミリ秒のタイマーを設定
-  Timer1.initialize(IM_RECEIVE_INTERVAL_MICROS);
-  // タイマーが500ミリ秒経過したらemergencyStop関数を呼び出すように設定
-  Timer1.attachInterrupt(emergencyStop);
-  // タイマーをスタート
-  Timer1.start();
+  // 500000マイクロ秒(0.5秒)のタイマーを設定
+  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
+  MsTimer2::start();
 }
 
 // 繰り返し実行される
@@ -92,8 +89,8 @@ void loop() {
 
 // ロボットから返答があった時に呼び出される関数
 void serialEvent() {
-  // ランプを点灯
-  digitalWriteFast(CONNECT_LED_PIN, HIGH);
+  // ランプを消灯
+  digitalWriteFast(CONNECT_LED_PIN, LOW);
   // タイマーのカウントを最初からやり直す
-  Timer1.restart();
+  MsTimer2::start();
 }
