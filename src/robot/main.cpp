@@ -39,6 +39,7 @@ NonSpeedAdjustable action1(PIN_PD2, PIN_PD4);
 NonSpeedAdjustable action2(PIN_PD7, PIN_PB0);
 NonSpeedAdjustable action3(PIN_PC3, PIN_PC2);
 NonSpeedAdjustable action4(PIN_PC1, PIN_PC0);
+NonSpeedAdjustable action5(PIN_PC4, PIN_PC5);
 #endif
 
 SerialPort serial(Serial); // SerialPort serial = Serial;
@@ -61,6 +62,7 @@ void emergencyStop() {
   // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
 #if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   action4.stop();
+  action5.stop();
 #endif
 }
 
@@ -159,6 +161,14 @@ void serialEvent() {
     action4.stop();
   }
 
+  if (controller.action5_1) {
+    action5.forward();
+  } else if (controller.action5_2) {
+    action5.reverse();
+  } else {
+    action5.stop();
+  }
+
   // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
 #else
   // Controller型のprevController変数を定義
@@ -191,6 +201,6 @@ void serialEvent() {
 #endif
 
   // コントローラーに受信が完了したことを知らせる
-  //im.send("Succes");
-  //Serial.println("TXDA 1111");
+  // im.send("Succes");
+  // Serial.println("TXDA 1111");
 }
