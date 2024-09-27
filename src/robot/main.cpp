@@ -146,12 +146,12 @@ void serialEvent() {
   // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
 #if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   // もしaction5_1ボタンが押されていたら
-  if (controller.btn9) {
+  if (controller.btn7) {
     // action4を前進させる
     action4.forward();
   }
   // もしaction5_2ボタンが押されていたら
-  else if (controller.btn10) {
+  else if (controller.btn8) {
     // action4を後進させる
     action4.reverse();
   }
@@ -161,9 +161,9 @@ void serialEvent() {
     action4.stop();
   }
 
-  if (controller.btn11) {
+  if (controller.btn9) {
     action5.forward();
-  } else if (controller.btn12) {
+  } else if (controller.btn10) {
     action5.reverse();
   } else {
     action5.stop();
