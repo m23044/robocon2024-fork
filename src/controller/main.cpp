@@ -19,6 +19,8 @@
 #define ACTION4_2_PIN PIN_PB2
 #define ACTION5_1_PIN PIN_PC2
 #define ACTION5_2_PIN PIN_PC3
+#define ACTION6_1_PIN PIN_PC4
+#define ACTION6_2_PIN PIN_PC5
 #define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
 
 // SerialPort型のserial変数を宣言し、Serial変数で初期化する
@@ -50,6 +52,8 @@ void setup() {
   pinModeFast(ACTION4_2_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_1_PIN, INPUT_PULLUP);
   pinModeFast(ACTION5_2_PIN, INPUT_PULLUP);
+  pinModeFast(ACTION6_1_PIN, INPUT_PULLUP);
+  pinModeFast(ACTION6_2_PIN, INPUT_PULLUP);
   // ランプを出力に設定
   pinModeFast(CONNECT_LED_PIN, OUTPUT);
 
@@ -70,16 +74,18 @@ void loop() {
   // コントローラーの状態を読み取る
   // controller変数は変数の集まりで、各変数には「.」を使ってアクセスする
   // 『!digitalReadFast(ACTIONn_n_PIN)』はボタンが押されている(いない)時に1(0)になる
-  controller.action1_1 = !digitalReadFast(ACTION1_1_PIN);
-  controller.action1_2 = !digitalReadFast(ACTION1_2_PIN);
-  controller.action2_1 = !digitalReadFast(ACTION2_1_PIN);
-  controller.action2_2 = !digitalReadFast(ACTION2_2_PIN);
-  controller.action3_1 = !digitalReadFast(ACTION3_1_PIN);
-  controller.action3_2 = !digitalReadFast(ACTION3_2_PIN);
-  controller.action4_1 = !digitalReadFast(ACTION4_1_PIN);
-  controller.action4_2 = !digitalReadFast(ACTION4_2_PIN);
-  controller.action5_1 = !digitalReadFast(ACTION5_1_PIN);
-  controller.action5_2 = !digitalReadFast(ACTION5_2_PIN);
+  controller.btn1 = !digitalReadFast(ACTION1_1_PIN);
+  controller.btn2 = !digitalReadFast(ACTION1_2_PIN);
+  controller.btn3 = !digitalReadFast(ACTION2_1_PIN);
+  controller.btn4 = !digitalReadFast(ACTION2_2_PIN);
+  controller.btn5 = !digitalReadFast(ACTION3_1_PIN);
+  controller.btn6 = !digitalReadFast(ACTION3_2_PIN);
+  controller.btn7 = !digitalReadFast(ACTION4_1_PIN);
+  controller.btn8 = !digitalReadFast(ACTION4_2_PIN);
+  controller.btn9 = !digitalReadFast(ACTION5_1_PIN);
+  controller.btn10 = !digitalReadFast(ACTION5_2_PIN);
+  controller.btn11 = !digitalReadFast(ACTION6_1_PIN);
+  controller.btn12 = !digitalReadFast(ACTION6_2_PIN);
 
   // コントローラーの状態をIM920SLを使って送信
   im.send(controller);
