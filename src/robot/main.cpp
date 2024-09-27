@@ -96,12 +96,12 @@ void serialEvent() {
   im.receive(controller);
 
   // もしaction1_1ボタンが押されていたら
-  if (controller.action1_1) {
+  if (controller.btn1) {
     // action1を前進させる
     action1.forward();
   }
   // もしaction1_2ボタンが押されていたら
-  else if (controller.action1_2) {
+  else if (controller.btn2) {
     // action1を後進させる
     action1.reverse();
   }
@@ -112,12 +112,12 @@ void serialEvent() {
   }
 
   // もしaction2_1ボタンが押されていたら
-  if (controller.action2_1) {
+  if (controller.btn3) {
     // action2を前進させる
     action2.forward();
   }
   // もしaction2_2ボタンが押されていたら
-  else if (controller.action2_2) {
+  else if (controller.btn4) {
     // action2を後進させる
     action2.reverse();
   }
@@ -128,12 +128,12 @@ void serialEvent() {
   }
 
   // もしaction3_1ボタンが押されていたら
-  if (controller.action3_1) {
+  if (controller.btn5) {
     // action3を前進させる
     action3.forward();
   }
   // もしaction3_2ボタンが押されていたら
-  else if (controller.action3_2) {
+  else if (controller.btn6) {
     // action3を後進させる
     action3.reverse();
   }
@@ -146,12 +146,12 @@ void serialEvent() {
   // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
 #if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   // もしaction5_1ボタンが押されていたら
-  if (controller.action5_1) {
+  if (controller.btn9) {
     // action4を前進させる
     action4.forward();
   }
   // もしaction5_2ボタンが押されていたら
-  else if (controller.action5_2) {
+  else if (controller.btn10) {
     // action4を後進させる
     action4.reverse();
   }
@@ -161,9 +161,9 @@ void serialEvent() {
     action4.stop();
   }
 
-  if (controller.action6_1) {
+  if (controller.btn11) {
     action5.forward();
-  } else if (controller.action6_2) {
+  } else if (controller.btn12) {
     action5.reverse();
   } else {
     action5.stop();
@@ -176,22 +176,22 @@ void serialEvent() {
   static Controller prevController;
 
   // もしaction4_1ボタンが新たに押さ、かつサーボモーターの段階が4未満の場合
-  if (!prevController.action4_1 && controller.action4_1 && level1 < 4) {
+  if (!prevController.btn7 && controller.btn7 && level1 < 4) {
     // サーボモーターの段階を1段階上げる
     level1++;
   }
   // もしaction4_2ボタンが新たに押さ、かつサーボモーターの段階が0より大きい場合
-  else if (!prevController.action4_2 && controller.action4_2 && level1 > 0) {
+  else if (!prevController.btn8 && controller.btn8 && level1 > 0) {
     // サーボモーターの段階を1段階下げる
     level1--;
   }
   // もしaction5_1ボタンが新たに押さ、かつサーボモーターの段階が4未満の場合
-  if (!prevController.action5_1 && controller.action5_1 && level2 < 4) {
+  if (!prevController.btn9 && controller.btn9 && level2 < 4) {
     // サーボモーターの段階を1段階上げる
     level2++;
   }
   // もしaction5_2ボタンが新たに押さ、かつサーボモーターの段階が0より大きい場合
-  else if (!prevController.action5_2 && controller.action5_2 && level2 > 0) {
+  else if (!prevController.btn10 && controller.btn10 && level2 > 0) {
     // サーボモーターの段階を1段階下げる
     level2--;
   }
