@@ -176,22 +176,22 @@ void serialEvent() {
   static Controller prevController;
 
   // もしaction4_1ボタンが新たに押さ、かつサーボモーターの段階が4未満の場合
-  if (!prevController.btn7 && controller.btn7 && level1 < 4) {
+  if (!prevController.btn9 && controller.btn9 && level1 < 4) {
     // サーボモーターの段階を1段階上げる
     level1++;
   }
   // もしaction4_2ボタンが新たに押さ、かつサーボモーターの段階が0より大きい場合
-  else if (!prevController.btn8 && controller.btn8 && level1 > 0) {
+  else if (!prevController.btn10 && controller.btn10 && level1 > 0) {
     // サーボモーターの段階を1段階下げる
     level1--;
   }
   // もしaction5_1ボタンが新たに押さ、かつサーボモーターの段階が4未満の場合
-  if (!prevController.btn9 && controller.btn9 && level2 < 4) {
+  if (!prevController.btn11 && controller.btn11 && level2 < 4) {
     // サーボモーターの段階を1段階上げる
     level2++;
   }
   // もしaction5_2ボタンが新たに押さ、かつサーボモーターの段階が0より大きい場合
-  else if (!prevController.btn10 && controller.btn10 && level2 > 0) {
+  else if (!prevController.btn12 && controller.btn12 && level2 > 0) {
     // サーボモーターの段階を1段階下げる
     level2--;
   }
