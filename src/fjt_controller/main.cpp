@@ -10,7 +10,6 @@
 
 #define LED A0
 
-static uint8_t recvBuffer[50];
 static uint8_t colonReceved = 0;
 static uint16_t wd = 0;
 
