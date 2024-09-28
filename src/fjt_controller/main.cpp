@@ -10,7 +10,7 @@
 
 #define LED A0
 
-static uint8_t colonReceved = 0;
+static bool colonReceved = false;
 static uint16_t wd = 0;
 
 void setup() {
@@ -48,13 +48,13 @@ void loop() {
   while (Serial.available() > 0) {
     uint8_t data = Serial.read();
     if (data == ':') {
-      colonReceved = 1;
+      colonReceved = true;
     } else if (data == '\r') {
-      if (colonReceved == 1) {
+      if (colonReceved) {
         digitalWrite(LED, HIGH);
         wd = 0;
       }
-      colonReceved = 0;
+      colonReceved = false;
     }
   }
 
