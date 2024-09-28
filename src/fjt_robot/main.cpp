@@ -1,10 +1,12 @@
 /*作成日: 2024/9月/11日
    作成者: D1 藤田
+   改変者: I3 藤本
    2024ABメイン
-   最終更新日:2024/9/15
+   最終更新日:2024/9/28
+   注意: 動作未確認
 */
-#include <MsTimer2.h>
 #include <Arduino.h>
+#include <MsTimer2.h>
 
 // 変数定義
 // 入力
@@ -26,22 +28,14 @@
 #define CF_OUT 15
 #define CR_OUT 14
 
-#define RF_OUT_D2 (_BV(PORTD2)) //_BVはビットセット
-#define RR_OUT_D4 (_BV(PORTD4))
-#define LF_OUT_D7 (_BV(PORTD7))
-#define LR_OUT_B0 (_BV(PORTB0))
-#define SF_OUT_C3 (_BV(PORTC3))
-#define SR_OUT_C2 (_BV(PORTC2))
-#define CF_OUT_C1 (_BV(PORTC1))
-#define CR_OUT_C0 (_BV(PORTC0))
-
 // wd
 #define WD 50
 uint8_t wd = WD;
 
 #define brt 19200
 
-uint8_t recvIndex = 255;
+uint8_t recvIndex = 0;
+bool colonReceved = false;
 uint8_t recvBuffer[50];
 uint8_t recvData[2];
 
@@ -72,14 +66,12 @@ void loop() {}
 void serialEvent() {
   while (Serial.available()) {
     uint8_t data = Serial.read();
-    uint8_t i;
-    if (recvIndex == 255 && data == ':') { //':'を受信すると
-      recvIndex = 0;                       // そこのデータから詰める
-    } else if (recvIndex != 255 && data == 0x0d) { // 改行を受信すると
-      // IM920Write();
+    if (data == ':') {                         //':'を受信すると
+      colonReceved = true;                     // 受信開始
+    } else if (colonReceved && data == '\r') { // 改行を受信すると
       wd = 0; // ウォッチドッグをクリア
       // 16進数データを2進数に変換
-      for (i = 0; i * 3 < recvIndex; i++) {
+      for (uint8_t i = 0; i * 3 < recvIndex; i++) {
         recvData[i] =
             ((recvBuffer[i * 3] <= '9' ? recvBuffer[i * 3] - '0'
                                        : recvBuffer[i * 3] - 'A' + 10)
@@ -87,12 +79,10 @@ void serialEvent() {
             (recvBuffer[i * 3 + 1] <= '9' ? recvBuffer[i * 3 + 1] - '0'
                                           : recvBuffer[i * 3 + 1] - 'A' + 10);
       }
-      recvIndex = 255;
       IM920Write(recvData, 2);
-
-    } else if (recvIndex >= 50) {
-      // データ数が1より小さく50より大きい時は無視
-    } else {
+      colonReceved = false;
+      recvIndex = 0;
+    } else if (colonReceved && recvIndex < sizeof(recvBuffer)) {
       recvBuffer[recvIndex] = data; // 受信データを代入
       recvIndex++;
     }
@@ -100,8 +90,7 @@ void serialEvent() {
 }
 
 void Timer2_OVF_vect() { // timer2がオーバーフローしたとき割り込み
-
-  if (wd >= WD) { // 非常用
+  if (wd >= WD) {        // 非常用
     digitalWrite(RF_OUT, LOW);
     digitalWrite(RR_OUT, LOW);
     digitalWrite(LF_OUT, LOW);
@@ -124,9 +113,10 @@ void Timer2_OVF_vect() { // timer2がオーバーフローしたとき割り込�
 }
 
 void IM920Write(const uint8_t *pdata, uint8_t n) {
-  Serial.print("TXDA");
+  Serial.print("TXDA ");
   for (uint8_t i = 0; i < n; i++) {
-    Serial.print(pdata[i], HEX);
+    Serial.print(pdata[i] >> 4, HEX);
+    Serial.print(pdata[i] & 0b1111, HEX);
   }
   Serial.println();
 }
