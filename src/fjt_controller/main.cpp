@@ -1,7 +1,9 @@
 /*作成日: 2024/9月/11日
    作成者: D1 藤田
+   改変者: I3 藤本
    2024ABチームコントローラ
-   最終更新日:2024/9/15
+   最終更新日:2024/9/28
+   注意： 改変したプログラムは動作確認ができていません。（元のプログラムは動作確認済み）
 */
 
 #include <Arduino.h>
@@ -9,14 +11,12 @@
 #define LED A0
 
 static uint8_t recvBuffer[50];
-static uint8_t recvIndex;
-static uint16_t wd;
+static uint8_t colonReceved = 0;
+static uint16_t wd = 0;
 
 void setup() {
 
   Serial.begin(19200);
-  // mySerial.begin(19200);
-
   pinMode(2, INPUT_PULLUP);
   pinMode(3, INPUT_PULLUP);
   pinMode(4, INPUT_PULLUP);
@@ -26,16 +26,7 @@ void setup() {
   pinMode(8, INPUT_PULLUP);
   pinMode(9, INPUT_PULLUP);
   pinMode(10, INPUT_PULLUP);
-  //  pinMode(A0, INPUT_PULLUP);
-  //  pinMode(A1, INPUT_PULLUP);
-  //  pinMode(A2, INPUT_PULLUP);
-  //  pinMode(A3, INPUT_PULLUP);
-  //  pinMode(A4, INPUT_PULLUP);
-  //  pinMode(A5, INPUT_PULLUP);
   pinMode(LED, OUTPUT);
-
-  recvIndex = 255;
-  wd = 0;
 }
 
 void loop() {
@@ -55,28 +46,24 @@ void loop() {
   Serial.println(kL, HEX);
 
   // wd
-  for (uint8_t i = 0; i < 60; i++) {
-    while (Serial.available() > 0) {
-      uint8_t data = Serial.read();
-      if (data == ':') {
-        recvIndex = 0;
-      } else if (data == '\r') {
-        if (recvIndex < 20) {
-          digitalWrite(LED, HIGH);
-          wd = 0;
-        }
-        recvIndex = 255;
-      } else if (recvIndex < 20) {
-        recvBuffer[recvIndex] = data;
+  while (Serial.available() > 0) {
+    uint8_t data = Serial.read();
+    if (data == ':') {
+      colonReceved = 1;
+    } else if (data == '\r') {
+      if (colonReceved == 1) {
+        digitalWrite(LED, HIGH);
+        wd = 0;
       }
+      colonReceved = 0;
     }
-
-    if (wd > 500) {
-      digitalWrite(LED, LOW);
-    } else {
-      wd++;
-    }
-
-    delay(1);
   }
+
+  if (wd > 500) {
+    digitalWrite(LED, LOW);
+  } else {
+    wd++;
+  }
+
+  delay(1);
 }
