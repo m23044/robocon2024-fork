@@ -11,8 +11,8 @@
 
 #define LED A0
 
-static bool colonReceved = false;
-static uint16_t wd = 0;
+bool colonReceved = false;
+uint16_t wd = 0;
 
 void setup() {
 
