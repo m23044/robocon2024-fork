@@ -98,7 +98,14 @@ void processReceivedData() {
         (recvBuffer[i * 3 + 1] <= '9' ? recvBuffer[i * 3 + 1] - '0'
                                       : recvBuffer[i * 3 + 1] - 'A' + 10);
   }
-  IM920Write(recvData, DATA_SIZE);
+
+  // コントローラーに受信したことを通知
+  Serial.print("TXDA ");
+  for (uint8_t i = 0; i < DATA_SIZE; i++) {
+    Serial.print(recvData[i] >> 4, HEX);  // 上位4ビット
+    Serial.print(recvData[i] & 0xF, HEX); // 下位4ビット
+  }
+  Serial.println();
 }
 
 // タイマー割込み
@@ -124,14 +131,4 @@ void Timer2_OVF_vect() {
     digitalWrite(CF_OUT, CF_IN ? HIGH : LOW);
     digitalWrite(CR_OUT, CR_IN ? HIGH : LOW);
   }
-}
-
-// IM920にデータを送信
-void IM920Write(const uint8_t *pdata, uint8_t n) {
-  Serial.print("TXDA ");
-  for (uint8_t i = 0; i < n; i++) {
-    Serial.print(pdata[i] >> 4, HEX);
-    Serial.print(pdata[i] & 0x0F, HEX); // 0x0F で下位4ビットをマスク
-  }
-  Serial.println();
 }
