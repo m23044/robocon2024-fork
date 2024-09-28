@@ -17,7 +17,6 @@ uint16_t wd = 0;
 void setup() {
 
   Serial.begin(19200);
-  pinMode(2, INPUT_PULLUP);
   pinMode(3, INPUT_PULLUP);
   pinMode(4, INPUT_PULLUP);
   pinMode(5, INPUT_PULLUP);
