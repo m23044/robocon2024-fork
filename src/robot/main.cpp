@@ -6,11 +6,6 @@
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
 #include <components/motors/NonSpeedAdjustable.h> // liboshimaのNonSpeedAdjustable.hを取得
 
-// もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
-#define ONE_LEVEL_DEGREE 45 // サーボモーターの1段階の角度を45度に設定
-#endif
-
 /*
   NonSpeedAdjustable型の変数を定義している。
   NonSpeedAdjustable型はint型と違い複雑な型であるため、int型の様に数字1つで初期化することはできない。
@@ -24,33 +19,16 @@
   ※NonSpeedAdjustableはモータドライバのことで、2つのピンを指定することでモータを制御することができる。※
 */
 // 使用可能なピン:
-// タパルト：PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、[PIN_PB1、PIN_PB2]
-// その他　：PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、[PIN_PC0、PIN_PC1]
-// もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
-NonSpeedAdjustable action1(PIN_PD2, PIN_PD4);
-NonSpeedAdjustable action2(PIN_PD7, PIN_PB0);
-NonSpeedAdjustable action3(PIN_PC3, PIN_PC2);
-Servo action4;
-Servo action5;
-// もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
-#else
+// PIN_PD2、PIN_PD4、PIN_PD7、PIN_PB0、PIN_PC2、PIN_PC3、[PIN_PC0、PIN_PC1]
 NonSpeedAdjustable action1(PIN_PD2, PIN_PD4);
 NonSpeedAdjustable action2(PIN_PD7, PIN_PB0);
 NonSpeedAdjustable action3(PIN_PC3, PIN_PC2);
 NonSpeedAdjustable action4(PIN_PC1, PIN_PC0);
 NonSpeedAdjustable action5(PIN_PC4, PIN_PC5);
-#endif
 
 SerialPort serial(Serial); // SerialPort serial = Serial;
 IM920SL im(serial);        // IM920SL im = serial;
 Controller controller;     // int a;
-
-// もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
-uint8_t level1 = 0;
-uint8_t level2 = 0;
-#endif
 
 // 緊急停止用の関数
 // 500ミリ秒経過すると、Timer1によって呼び出される
@@ -58,12 +36,8 @@ void emergencyStop() {
   action1.stop();
   action2.stop();
   action3.stop();
-
-  // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
-#if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   action4.stop();
   action5.stop();
-#endif
 }
 
 // setup1回だけ実行される
@@ -74,20 +48,9 @@ void setup() {
 
   // IM920SLの初期化
   im.begin();
-
-  // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
-  action4.attach(PIN_PB1); // サーボモータ1をPIN_PB1に接続
-  action5.attach(PIN_PB2); // サーボモータ2をPIN_PB2に接続
-#endif
 }
 
-void loop() {
-#if defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
-  action4.write(ONE_LEVEL_DEGREE * level1);
-  action5.write(ONE_LEVEL_DEGREE * level2);
-#endif
-}
+void loop() {}
 
 void serialEvent() {
   MsTimer2::start();
@@ -143,8 +106,6 @@ void serialEvent() {
     action3.stop();
   }
 
-  // もしBチームのロボット2のビルドを行なわない場合は以下のコードを有効にする
-#if !defined(ROBOCCHI) // ROBOCCHIはplatformio.iniの57行目で定義されている
   // もしaction5_1ボタンが押されていたら
   if (controller.btn7) {
     // action4を前進させる
@@ -168,37 +129,6 @@ void serialEvent() {
   } else {
     action5.stop();
   }
-
-  // もしBチームのロボット2のビルドを行う場合は以下のコードを有効にする
-#else
-  // Controller型のprevController変数を定義
-  // staticキーワードによって、その変数が関数の呼び出しのたびに初期化されないようにする
-  static Controller prevController;
-
-  // もしaction4_1ボタンが新たに押さ、かつサーボモーターの段階が4未満の場合
-  if (!prevController.btn9 && controller.btn9 && level1 < 4) {
-    // サーボモーターの段階を1段階上げる
-    level1++;
-  }
-  // もしaction4_2ボタンが新たに押さ、かつサーボモーターの段階が0より大きい場合
-  else if (!prevController.btn10 && controller.btn10 && level1 > 0) {
-    // サーボモーターの段階を1段階下げる
-    level1--;
-  }
-  // もしaction5_1ボタンが新たに押さ、かつサーボモーターの段階が4未満の場合
-  if (!prevController.btn11 && controller.btn11 && level2 < 4) {
-    // サーボモーターの段階を1段階上げる
-    level2++;
-  }
-  // もしaction5_2ボタンが新たに押さ、かつサーボモーターの段階が0より大きい場合
-  else if (!prevController.btn12 && controller.btn12 && level2 > 0) {
-    // サーボモーターの段階を1段階下げる
-    level2--;
-  }
-
-  // prevController変数をcontroller変数で更新
-  prevController = controller;
-#endif
 
   // コントローラーに受信が完了したことを知らせる
   // im.send("Succes");
