@@ -18,10 +18,8 @@ SerialPort serial(Serial);
 // ImSender型のsender変数を宣言し、serial変数で初期化する
 IM920SL im(serial);
 
-// 緊急停止のランプを点灯させる関数
-void emergencyStop() {
-  digitalWriteFast(CONNECT_LED_PIN, HIGH); // ランプを点灯
-}
+// 接続中のランプを消灯する関数
+void onDisconnected() { digitalWriteFast(CONNECT_LED_PIN, LOW); }
 
 // 1度だけ実行される
 void setup() {
@@ -36,7 +34,7 @@ void setup() {
   im.begin();
 
   // 500000マイクロ秒(0.5秒)のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
+  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, onDisconnected);
   MsTimer2::start();
 }
 
@@ -60,7 +58,7 @@ void loop() {
 // ロボットから返答があった時に呼び出される関数
 void serialEvent() {
   // ランプを消灯
-  digitalWriteFast(CONNECT_LED_PIN, LOW);
+  digitalWriteFast(CONNECT_LED_PIN, HIGH);
   // タイマーのカウントを最初からやり直す
   MsTimer2::start();
 }
