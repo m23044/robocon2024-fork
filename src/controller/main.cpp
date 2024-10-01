@@ -1,4 +1,5 @@
 // 他のファイルのプログラムを取得する
+#include "Controller.h" // 同じディレクトリにあるController.hを取得
 #include <Arduino.h>
 #include <MsTimer2.h> // MsTimer2.hを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
@@ -29,26 +30,6 @@ void serialEvent() {
   MsTimer2::start();
 }
 
-uint16_t generateKeyCode() {
-  // ボタンの状態を格納する変数(16ビット)を宣言
-  // 0000 0000 0000 0000 <- なんのボタンも押されていない状態
-  // 0000 0000 0000 0001 <- btnPins[0]のボタンが押されている状態
-  // 1000 0000 0000 0001 <- btnPins[0]とbtnPins[15]のボタンが押されている状態
-  // ^^^^ ^^^^ ^^^^ ^^^^
-  // |||| |||| |||| ||||
-  // |||| |||| |||| |||+---- btnPins[0]の状態
-  // |||| |||| |||| ||+----- btnPins[1]の状態
-  // |||| |||| |||| |+------ btnPins[2]の状態
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  // +---------------------- btnPins[15]の状態
-  uint16_t keyCode = 0;
-
-  for (uint8_t i = 0; i < sizeof(btnPins); i++) {
-    keyCode |= !digitalReadFast(btnPins[i]) << i;
-  }
-  return keyCode;
-}
-
 // 1度だけ実行される
 void setup() {
   // 各ピンに対しボタンとして使うための設定を行う
@@ -69,9 +50,14 @@ void setup() {
 // 繰り返し実行される
 void loop() {
   // ボタンの状態を取得し、キーコードを生成
-  uint16_t keyCode = generateKeyCode();
+  Controller controller;
+  for (uint8_t i = 0; i < sizeof(btnPins); i++) {
+    bool state = !digitalReadFast(btnPins[i]);
+    controller.set(state, i);
+  }
+
   // コントローラーの状態をIM920SLを使って送信
-  im.send(keyCode);
+  im.send(controller);
   // 100ミリ秒待機
   delay(IM_SEND_INTERVAL);
 }

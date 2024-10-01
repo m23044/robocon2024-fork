@@ -1,3 +1,4 @@
+#include "controller/Controller.h"
 #include <Arduino.h>
 #include <MsTimer2.h>
 #include <Servo.h>
@@ -39,25 +40,18 @@ void serialEvent() {
   MsTimer2::start();
 
   // ボタンの状態を取得する
-  uint16_t keyCode;
-  im.receive(keyCode);
+  Controller controller;
+  im.receive(controller);
 
-  // ボタンの状態に応じてモータを制御する
-  // keyCode = 0000 0000 0000 0000
-  //           ^^^^ ^^^^ ^^^^ ^^^^
-  //           |||| |||| |||| ||||
-  //           |||| |||| |||| |||+---- i = 0の時、1か0かを調べる
-  //           |||| |||| |||| ||+----- i = 1の時、1か0かを調べる
-  // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  //           +---------------------- i = 15の時、1か0かを調べる
-  for (uint8_t i = 0; i < sizeof(motors) / sizeof(motors[0]); i++) {
-    if (keyCode & (1 << i)) { // ボタンが押されている場合
-      if (i % 2 == 0) // 偶数番目のボタンが押されている場合
-        motors[i].forward();
-      else
-        motors[i].reverse();
-    } else { // ボタンが押されていない場合
-      motors[i].stop();
+  uint8_t numMotors = sizeof(motors) / sizeof(motors[0]);
+  for (uint8_t motorNum = 0; motorNum < numMotors; motorNum++) {
+    uint8_t btnNum = motorNum * 2;
+    if (controller.get(btnNum)) {
+      motors[motorNum].forward();
+    } else if (controller.get(btnNum + 1)) {
+      motors[motorNum].reverse();
+    } else {
+      motors[motorNum].stop();
     }
   }
 
