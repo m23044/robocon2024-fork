@@ -1,5 +1,5 @@
 // 他のファイルのプログラムを取得する
-#include "Controller.h" // 同じディレクトリにあるController.hを取得
+#include "ControllerData.h" // ControllerData.hを取得
 #include <Arduino.h>
 #include <MsTimer2.h> // MsTimer2.hを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
@@ -33,9 +33,10 @@ void serialEvent() {
 // 1度だけ実行される
 void setup() {
   // 各ピンに対しボタンとして使うための設定を行う
-  for (uint8_t i = 0; i < sizeof(btnPins); i++) {
-    pinModeFast(btnPins[i], INPUT_PULLUP);
+  for (auto pin : btnPins) {
+    pinModeFast(pin, INPUT_PULLUP);
   }
+
   // ランプを出力に設定
   pinModeFast(CONNECT_LED_PIN, OUTPUT);
 
@@ -49,11 +50,19 @@ void setup() {
 
 // 繰り返し実行される
 void loop() {
-  // ボタンの状態を取得し、キーコードを生成
-  Controller controller;
-  for (uint8_t i = 0; i < sizeof(btnPins); i++) {
-    bool state = !digitalReadFast(btnPins[i]);
-    controller.set(state, i);
+  // ボタンの状態を取得し、コントローラーの状態を更新
+  ControllerData controller;
+
+  {
+    uint8_t pinNum = 0;
+    uint8_t motorNum = 0;
+    while (pinNum < sizeof(btnPins)) {
+      bool state1 = !digitalReadFast(btnPins[pinNum++]);
+      bool state2 = !digitalReadFast(btnPins[pinNum++]);
+      controller.motors[motorNum].forward = state1;
+      controller.motors[motorNum].reverse = state2;
+      motorNum++;
+    }
   }
 
   // コントローラーの状態をIM920SLを使って送信

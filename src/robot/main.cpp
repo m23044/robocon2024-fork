@@ -1,8 +1,8 @@
-#include "controller/Controller.h"
 #include <Arduino.h>
 #include <MsTimer2.h>
 #include <components/ims/IM920SL.h>
 #include <components/motors/NonSpeedAdjustable.h>
+#include <controller/ControllerData.h>
 
 /*
   int型の配列を作成する場合、以下のようにする。
@@ -39,18 +39,17 @@ void serialEvent() {
   MsTimer2::start();
 
   // ボタンの状態を取得する
-  Controller controller;
+  ControllerData controller;
   im.receive(controller);
 
   uint8_t numMotors = sizeof(motors) / sizeof(motors[0]);
-  for (uint8_t motorNum = 0; motorNum < numMotors; motorNum++) {
-    uint8_t btnNum = motorNum * 2;
-    if (controller.get(btnNum)) {
-      motors[motorNum].forward();
-    } else if (controller.get(btnNum + 1)) {
-      motors[motorNum].reverse();
+  for (uint8_t i = 0; i < numMotors; i++) {
+    if (controller.motors[i].forward) {
+      motors[i].forward();
+    } else if (controller.motors[i].reverse) {
+      motors[i].reverse();
     } else {
-      motors[motorNum].stop();
+      motors[i].stop();
     }
   }
 
