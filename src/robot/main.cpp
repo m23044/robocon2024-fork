@@ -1,7 +1,6 @@
 #include "controller/Controller.h"
 #include <Arduino.h>
 #include <MsTimer2.h>
-#include <Servo.h>
 #include <components/ims/IM920SL.h>
 #include <components/motors/NonSpeedAdjustable.h>
 
