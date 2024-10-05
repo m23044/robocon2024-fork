@@ -16,7 +16,7 @@ const uint8_t btnPins[] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
 // SerialPort型のserial変数を宣言し、Serial変数で初期化する
 SerialPort serial(Serial);
 
-// ImSender型のsender変数を宣言し、serial変数で初期化する
+// ImSender_private型のsender変数を宣言し、serial変数で初期化する
 IM920SL im(serial);
 
 // 接続中のランプを消灯する関数
@@ -57,10 +57,14 @@ void loop() {
     uint8_t pinNum = 0;
     uint8_t motorNum = 0;
     while (pinNum < sizeof(btnPins)) {
-      bool state1 = !digitalReadFast(btnPins[pinNum++]);
-      bool state2 = !digitalReadFast(btnPins[pinNum++]);
-      controller.motors[motorNum].forward = state1;
-      controller.motors[motorNum].reverse = state2;
+      if (!digitalReadFast(btnPins[pinNum])) {
+        controller.motors[motorNum] = MotorStateEnum::Forward;
+      } else if (!digitalReadFast(btnPins[pinNum + 1])) {
+        controller.motors[motorNum] = MotorStateEnum::Reverse;
+      } else {
+        controller.motors[motorNum] = MotorStateEnum::Stop;
+      }
+      pinNum += 2;
       motorNum++;
     }
   }

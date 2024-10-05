@@ -1,6 +1,6 @@
 #pragma once
 
-#include <components/Controller.h>
+#include <components/controllers/Controller.h>
 
 #define NUM_MOTORS 5
 #define NUM_BUTTONS 0

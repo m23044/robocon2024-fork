@@ -44,17 +44,21 @@ void serialEvent() {
 
   uint8_t numMotors = sizeof(motors) / sizeof(motors[0]);
   for (uint8_t i = 0; i < numMotors; i++) {
-    if (controller.motors[i].forward) {
+    switch (controller.motors[i]) {
+    case MotorStateEnum::Forward:
       motors[i].forward();
-    } else if (controller.motors[i].reverse) {
+      break;
+    case MotorStateEnum::Reverse:
       motors[i].reverse();
-    } else {
+      break;
+    case MotorStateEnum::Stop:
       motors[i].stop();
+      break;
     }
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send("Success");
+  //im.send("Success");
 }
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される
