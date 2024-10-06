@@ -9,7 +9,7 @@
 #define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
 
 // ボタンピン番号の配列
-const uint8_t btnPins[] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
+const uint8_t btnPins[NUM_MOTORS * 2] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
                            PIN_PD7, PIN_PB0, PIN_PB1, PIN_PB2,
                            PIN_PC2, PIN_PC3, PIN_PC4, PIN_PC5};
 
