@@ -1,6 +1,6 @@
 #pragma once
 
-#include <components/controllers/ControllerData.h>
+#include <liboshima.h>
 
 #define NUM_MOTORS 5
 #define NUM_BUTTONS 0

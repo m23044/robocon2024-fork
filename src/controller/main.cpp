@@ -2,8 +2,8 @@
 #include "Controller.h" // Controller.hを取得
 #include <Arduino.h>
 #include <MsTimer2.h> // MsTimer2.hを取得
-#include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
-#include <digitalWriteFast.h> // digitalWriteFast.hを取得
+#include <digitalWriteFast.h>
+#include <liboshima.h> // liboshima.hを取得
 
 // #defineでピン番号に別名をつける
 #define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
@@ -13,11 +13,8 @@ const uint8_t btnPins[] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
                            PIN_PD7, PIN_PB0, PIN_PB1, PIN_PB2,
                            PIN_PC2, PIN_PC3, PIN_PC4, PIN_PC5};
 
-// SerialPort型のserial変数を宣言し、Serial変数で初期化する
-SerialPort serial(Serial);
-
-// ImSender_private型のsender変数を宣言し、serial変数で初期化する
-IM920SL im(serial);
+// ImSender型のsender変数を宣言し、serial変数で初期化する
+IM920SL im(Serial);
 
 // 接続中のランプを消灯する関数
 void onDisconnected() { digitalWriteFast(CONNECT_LED_PIN, LOW); }

@@ -1,8 +1,7 @@
 #include <Arduino.h>
 #include <MsTimer2.h>
-#include <components/ims/IM920SL.h>
-#include <components/motors/NonSpeedAdjustable.h>
 #include <controller/Controller.h>
+#include <liboshima.h>
 
 /*
   int型の配列を作成する場合、以下のようにする。
@@ -30,8 +29,7 @@ NonSpeedAdjustable motors[] = {
     NonSpeedAdjustable(PIN_PC4, PIN_PC5)};
 
 // im920SLを使用するための変数を作成する
-SerialPort serial(Serial);
-IM920SL im(serial);
+IM920SL im(Serial);
 
 // コントローラーからデータを受信した際に実行される
 void serialEvent() {
@@ -58,7 +56,7 @@ void serialEvent() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  // im.send("Success");
+  im.send("Success");
 }
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される
