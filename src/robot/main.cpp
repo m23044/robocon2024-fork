@@ -2,7 +2,7 @@
 #include <MsTimer2.h>
 #include <components/ims/IM920SL.h>
 #include <components/motors/NonSpeedAdjustable.h>
-#include <controller/ControllerData.h>
+#include <controller/Controller.h>
 
 /*
   int型の配列を作成する場合、以下のようにする。

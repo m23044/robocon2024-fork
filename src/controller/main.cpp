@@ -1,5 +1,5 @@
 // 他のファイルのプログラムを取得する
-#include "ControllerData.h" // ControllerData.hを取得
+#include "Controller.h" // ControllerData.hを取得
 #include <Arduino.h>
 #include <MsTimer2.h> // MsTimer2.hを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
