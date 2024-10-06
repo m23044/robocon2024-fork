@@ -23,7 +23,7 @@
 
   ※NonSpeedAdjustableはモータドライバのことで、2つのピンを指定することでモータを制御することができる。※
 */
-NonSpeedAdjustable motors[] = {
+NonSpeedAdjustable motors[NUM_MOTORS] = {
     NonSpeedAdjustable(PIN_PD2, PIN_PD4), NonSpeedAdjustable(PIN_PD7, PIN_PB0),
     NonSpeedAdjustable(PIN_PC3, PIN_PC2), NonSpeedAdjustable(PIN_PC1, PIN_PC0),
     NonSpeedAdjustable(PIN_PC4, PIN_PC5)};
@@ -41,8 +41,7 @@ void serialEvent() {
   Controller controller;
   im.receive(controller);
 
-  uint8_t numMotors = sizeof(motors) / sizeof(motors[0]);
-  for (uint8_t i = 0; i < numMotors; i++) {
+  for (uint8_t i = 0; i < NUM_MOTORS; i++) {
     switch (controller.motors[i]) {
     case MotorStateEnum::Forward:
       motors[i].forward();
