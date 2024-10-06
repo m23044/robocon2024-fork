@@ -56,7 +56,7 @@ void serialEvent() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send("Success");
+  im.send(CONNECT_SUCCESS);
 }
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される

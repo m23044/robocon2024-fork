@@ -2,6 +2,8 @@
 
 #include <liboshima.h>
 
+#define CONNECT_SUCCESS "Success"
+
 #define NUM_MOTORS 5
 #define NUM_BUTTONS 0
 #define NUM_STICKS 0

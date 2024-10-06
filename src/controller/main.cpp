@@ -21,9 +21,9 @@ void onDisconnected() { digitalWriteFast(CONNECT_LED_PIN, LOW); }
 
 // ロボットから返答があった時に呼び出される関数
 void serialEvent() {
-  char buf[sizeof("Success")];
+  char buf[sizeof(CONNECT_SUCCESS)];
   im.receive(buf);
-  if (strcmp(buf, "Success") == 0) {
+  if (strcmp(buf, CONNECT_SUCCESS) == 0) {
     // ランプを消灯
     digitalWriteFast(CONNECT_LED_PIN, HIGH);
     // タイマーのカウントを最初からやり直す
