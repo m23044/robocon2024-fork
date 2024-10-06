@@ -1,5 +1,5 @@
 // 他のファイルのプログラムを取得する
-#include "Controller.h" // ControllerData.hを取得
+#include "Controller.h" // Controller.hを取得
 #include <Arduino.h>
 #include <MsTimer2.h> // MsTimer2.hを取得
 #include <components/ims/IM920SL.h> // liboshima(大島商船用ライブラリ)のIM920SL.hを取得
@@ -51,7 +51,7 @@ void setup() {
 // 繰り返し実行される
 void loop() {
   // ボタンの状態を取得し、コントローラーの状態を更新
-  ControllerData controller;
+  Controller controller;
 
   {
     uint8_t pinNum = 0;

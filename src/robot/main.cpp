@@ -39,7 +39,7 @@ void serialEvent() {
   MsTimer2::start();
 
   // ボタンの状態を取得する
-  ControllerData controller;
+  Controller controller;
   im.receive(controller);
 
   uint8_t numMotors = sizeof(motors) / sizeof(motors[0]);
@@ -58,7 +58,7 @@ void serialEvent() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  //im.send("Success");
+  // im.send("Success");
 }
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される
