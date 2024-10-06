@@ -2,7 +2,7 @@
 
 #include <liboshima.h>
 
-#define NUM_MOTORS 6
+#define NUM_MOTORS 5
 #define NUM_BUTTONS 0
 #define NUM_STICKS 0
 

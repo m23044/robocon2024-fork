@@ -11,7 +11,7 @@
 // ボタンピン番号の配列
 const uint8_t btnPins[NUM_MOTORS * 2] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
                                          PIN_PD7, PIN_PB0, PIN_PB1, PIN_PB2,
-                                         PIN_PC2, PIN_PC3, PIN_PC4, PIN_PC5};
+                                         PIN_PC2, PIN_PC3};
 
 // ImSender型のsender変数を宣言し、serial変数で初期化する
 IM920SL im(Serial);
