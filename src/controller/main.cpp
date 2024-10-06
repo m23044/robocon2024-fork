@@ -71,6 +71,6 @@ void loop() {
 
   // コントローラーの状態をIM920SLを使って送信
   im.send(controller);
-  // 100ミリ秒待機
+  // 55ミリ秒待機
   delay(IM_SEND_INTERVAL);
 }
