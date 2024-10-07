@@ -40,38 +40,33 @@ void setup() {
 // 繰り返し実行される
 void loop() {
   // ロボットにコントローラーの状態を送信
-  {
-    // ボタンの状態を取得し、コントローラーの状態を更新
-    Controller controller;
+  // ボタンの状態を取得し、コントローラーの状態を更新
+  Controller controller;
 
-    uint8_t pinNum = 0;
-    uint8_t motorNum = 0;
-    while (pinNum < sizeof(btnPins)) {
-      if (!digitalReadFast(btnPins[pinNum])) {
-        controller.motors[motorNum] = MotorStateEnum::Forward;
-      } else if (!digitalReadFast(btnPins[pinNum + 1])) {
-        controller.motors[motorNum] = MotorStateEnum::Reverse;
-      } else {
-        controller.motors[motorNum] = MotorStateEnum::Stop;
-      }
-      pinNum += 2;
-      motorNum++;
+  uint8_t pinNum = 0;
+  uint8_t motorNum = 0;
+  while (pinNum < sizeof(btnPins)) {
+    if (!digitalReadFast(btnPins[pinNum])) {
+      controller.motors[motorNum] = MotorStateEnum::Forward;
+    } else if (!digitalReadFast(btnPins[pinNum + 1])) {
+      controller.motors[motorNum] = MotorStateEnum::Reverse;
+    } else {
+      controller.motors[motorNum] = MotorStateEnum::Stop;
     }
-
-    // コントローラーの状態をIM920SLを使って送信
-    im.send(controller);
+    pinNum += 2;
+    motorNum++;
   }
 
+  // コントローラーの状態をIM920SLを使って送信
+  im.send(controller);
+
   // ロボットからの応答を受信
-  {
-    char buf[sizeof(CONNECT_SUCCESS)];
-    ReceiveErrorCode code = im.receive(buf);
-    if (code == ReceiveErrorCode::SUCCESS &&
-        strcmp(buf, CONNECT_SUCCESS) == 0) {
-      // ランプを消灯
-      digitalWriteFast(CONNECT_LED_PIN, HIGH);
-      // タイマーのカウントを最初からやり直す
-      MsTimer2::start();
-    }
+  char buf[sizeof(CONNECT_SUCCESS)];
+  ReceiveErrorCode code = im.receive(buf);
+  if (code == ReceiveErrorCode::SUCCESS) {
+    // ランプを消灯
+    digitalWriteFast(CONNECT_LED_PIN, HIGH);
+    // タイマーのカウントを最初からやり直す
+    MsTimer2::start();
   }
 }
