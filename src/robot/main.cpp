@@ -31,8 +31,25 @@ NonSpeedAdjustable motors[NUM_MOTORS] = {
 // im920SLを使用するための変数を作成する
 IM920SL im(Serial);
 
-// コントローラーからデータを受信した際に実行される
-void serialEvent() {
+// 一定時間コントローラーからデータを受信しなかった場合に実行される
+void emergencyStop() {
+  // 各モータに対して停止命令を送る
+  for (auto &motor : motors) {
+    motor.stop();
+  }
+}
+
+// 1度だけ実行される
+void setup() {
+  // 0.5秒のタイマーを設定
+  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
+  MsTimer2::start();
+  // IM920SLの初期化
+  im.begin();
+}
+
+// 繰り返し実行される
+void loop() {
   // ボタンの状態を取得する
   Controller controller;
   ReceiveErrorCode error = im.receive(controller);
@@ -58,25 +75,5 @@ void serialEvent() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  //im.send(CONNECT_SUCCESS);
+  im.send(CONNECT_SUCCESS);
 }
-
-// 一定時間コントローラーからデータを受信しなかった場合に実行される
-void emergencyStop() {
-  // 各モータに対して停止命令を送る
-  for (auto &motor : motors) {
-    motor.stop();
-  }
-}
-
-// 1度だけ実行される
-void setup() {
-  // 0.5秒のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
-  MsTimer2::start();
-  // IM920SLの初期化
-  im.begin();
-}
-
-// 繰り返し実行される
-void loop() {}
