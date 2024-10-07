@@ -29,8 +29,7 @@ NonSpeedAdjustable motors[NUM_MOTORS] = {
     NonSpeedAdjustable(PIN_PC4, PIN_PC5)};
 
 // im920SLを使用するための変数を作成する
-DebugLogger logger(Serial);
-IM920SL im(Serial, &logger);
+IM920SL im(Serial);
 
 // コントローラーからデータを受信した際に実行される
 void serialEvent() {
@@ -59,7 +58,7 @@ void serialEvent() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(CONNECT_SUCCESS);
+  //im.send(CONNECT_SUCCESS);
 }
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される
