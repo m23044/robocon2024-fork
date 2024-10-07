@@ -19,18 +19,6 @@ IM920SL im(Serial);
 // 接続中のランプを消灯する関数
 void onDisconnected() { digitalWriteFast(CONNECT_LED_PIN, LOW); }
 
-// ロボットから返答があった時に呼び出される関数
-void serialEvent() {
-  char buf[sizeof(CONNECT_SUCCESS)];
-  im.receive(buf);
-  if (strcmp(buf, CONNECT_SUCCESS) == 0) {
-    // ランプを消灯
-    digitalWriteFast(CONNECT_LED_PIN, HIGH);
-    // タイマーのカウントを最初からやり直す
-    MsTimer2::start();
-  }
-}
-
 // 1度だけ実行される
 void setup() {
   // 各ピンに対しボタンとして使うための設定を行う
@@ -51,10 +39,11 @@ void setup() {
 
 // 繰り返し実行される
 void loop() {
-  // ボタンの状態を取得し、コントローラーの状態を更新
-  Controller controller;
-
+  // ロボットにコントローラーの状態を送信
   {
+    // ボタンの状態を取得し、コントローラーの状態を更新
+    Controller controller;
+
     uint8_t pinNum = 0;
     uint8_t motorNum = 0;
     while (pinNum < sizeof(btnPins)) {
@@ -68,10 +57,21 @@ void loop() {
       pinNum += 2;
       motorNum++;
     }
+
+    // コントローラーの状態をIM920SLを使って送信
+    im.send(controller);
   }
 
-  // コントローラーの状態をIM920SLを使って送信
-  im.send(controller);
-  // 55ミリ秒待機
-  delay(IM_SEND_INTERVAL);
+  // ロボットからの応答を受信
+  {
+    char buf[sizeof(CONNECT_SUCCESS)];
+    ReceiveErrorCode code = im.receive(buf);
+    if (code == ReceiveErrorCode::SUCCESS &&
+        strcmp(buf, CONNECT_SUCCESS) == 0) {
+      // ランプを消灯
+      digitalWriteFast(CONNECT_LED_PIN, HIGH);
+      // タイマーのカウントを最初からやり直す
+      MsTimer2::start();
+    }
+  }
 }
