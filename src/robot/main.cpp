@@ -34,12 +34,15 @@ IM920SL im(Serial, &logger);
 
 // コントローラーからデータを受信した際に実行される
 void serialEvent() {
-  // タイマーをリセットする
-  MsTimer2::start();
-
   // ボタンの状態を取得する
   Controller controller;
-  im.receive(controller);
+  ReceiveErrorCode error = im.receive(controller);
+  if (error != ReceiveErrorCode::SUCCESS) {
+    return;
+  }
+
+  // タイマーをリセットする
+  MsTimer2::start();
 
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
     switch (controller.motors[i]) {
