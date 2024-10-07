@@ -62,7 +62,7 @@ void loop() {
 
   // ロボットからの応答を受信
   char buf[sizeof(CONNECT_SUCCESS)];
-  ReceiveErrorCode code = im.receive(buf);
+  ReceiveErrorCode code = im.receiveUntil(buf, true);
   if (code == ReceiveErrorCode::SUCCESS) {
     // ランプを消灯
     digitalWriteFast(CONNECT_LED_PIN, HIGH);
