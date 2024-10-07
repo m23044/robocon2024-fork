@@ -29,8 +29,9 @@ NonSpeedAdjustable motors[NUM_MOTORS] = {
     NonSpeedAdjustable(PIN_PC4, PIN_PC5)};
 
 // im920SLを使用するための変数を作成する
-DebugLogger logger(Serial);
-IM920SL im(Serial, &logger);
+// DebugLogger logger(Serial);
+// IM920SL im(Serial, &logger);
+IM920SL im(Serial);
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される
 void emergencyStop() {
@@ -46,7 +47,7 @@ void setup() {
   MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
   MsTimer2::start();
   // 初期化
-  logger.begin();
+  //logger.begin();
   im.begin();
 }
 
