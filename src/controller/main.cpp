@@ -32,8 +32,8 @@ void setup() {
   // IM920SLの初期化
   im.begin();
 
-  // 500000マイクロ秒(0.5秒)のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, onDisconnected);
+  // 1秒のタイマーを設定
+  MsTimer2::set(IM_RECEIVE_TIMEOUT, onDisconnected);
   MsTimer2::start();
 }
 
