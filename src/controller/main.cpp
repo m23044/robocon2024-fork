@@ -19,18 +19,6 @@ IM920SL im(Serial);
 // 接続中のランプを消灯する関数
 void onDisconnected() { digitalWriteFast(CONNECT_LED_PIN, LOW); }
 
-// ロボットから返答があった時に呼び出される関数
-void serialEvent() {
-  char buf[sizeof(CONNECT_SUCCESS)];
-  im.receive(buf);
-  if (strcmp(buf, CONNECT_SUCCESS) == 0) {
-    // ランプを消灯
-    digitalWriteFast(CONNECT_LED_PIN, HIGH);
-    // タイマーのカウントを最初からやり直す
-    MsTimer2::start();
-  }
-}
-
 // 1度だけ実行される
 void setup() {
   // 各ピンに対しボタンとして使うための設定を行う
@@ -44,34 +32,43 @@ void setup() {
   // IM920SLの初期化
   im.begin();
 
-  // 500000マイクロ秒(0.5秒)のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, onDisconnected);
+  // 1秒のタイマーを設定
+  MsTimer2::set(IM_RECEIVE_TIMEOUT, onDisconnected);
   MsTimer2::start();
 }
 
 // 繰り返し実行される
 void loop() {
+  // ロボットにコントローラーの状態を送信
   // ボタンの状態を取得し、コントローラーの状態を更新
   Controller controller;
 
-  {
-    uint8_t pinNum = 0;
-    uint8_t motorNum = 0;
-    while (pinNum < sizeof(btnPins)) {
-      if (!digitalReadFast(btnPins[pinNum])) {
-        controller.motors[motorNum] = MotorStateEnum::Forward;
-      } else if (!digitalReadFast(btnPins[pinNum + 1])) {
-        controller.motors[motorNum] = MotorStateEnum::Reverse;
-      } else {
-        controller.motors[motorNum] = MotorStateEnum::Stop;
-      }
-      pinNum += 2;
-      motorNum++;
+  uint8_t pinNum = 0;
+  uint8_t motorNum = 0;
+  while (pinNum < sizeof(btnPins)) {
+    if (!digitalReadFast(btnPins[pinNum])) {
+      controller.motors[motorNum] = MotorStateEnum::Forward;
+    } else if (!digitalReadFast(btnPins[pinNum + 1])) {
+      controller.motors[motorNum] = MotorStateEnum::Reverse;
+    } else {
+      controller.motors[motorNum] = MotorStateEnum::Stop;
     }
+    pinNum += 2;
+    motorNum++;
   }
 
   // コントローラーの状態をIM920SLを使って送信
   im.send(controller);
-  // 55ミリ秒待機
+  // これをしないとなぜかランプが点滅しない
   delay(IM_SEND_INTERVAL);
+
+  // ロボットからの応答を受信
+  char buf[sizeof(CONNECT_SUCCESS)];
+  ReceiveErrorCode code = im.receiveUntil(buf, true);
+  if (code == ReceiveErrorCode::SUCCESS) {
+    // ランプを消灯
+    digitalWriteFast(CONNECT_LED_PIN, HIGH);
+    // タイマーのカウントを最初からやり直す
+    MsTimer2::start();
+  }
 }
