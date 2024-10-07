@@ -29,8 +29,6 @@ NonSpeedAdjustable motors[NUM_MOTORS] = {
     NonSpeedAdjustable(PIN_PC4, PIN_PC5)};
 
 // im920SLを使用するための変数を作成する
-// DebugLogger logger(Serial);
-// IM920SL im(Serial, &logger);
 IM920SL im(Serial);
 
 // 一定時間コントローラーからデータを受信しなかった場合に実行される
@@ -44,10 +42,9 @@ void emergencyStop() {
 // 1度だけ実行される
 void setup() {
   // 0.5秒のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_INTERVAL_MILLIS, emergencyStop);
+  MsTimer2::set(IM_RECEIVE_TIMEOUT, emergencyStop);
   MsTimer2::start();
   // 初期化
-  //logger.begin();
   im.begin();
 }
 
@@ -55,10 +52,7 @@ void setup() {
 void loop() {
   // ボタンの状態を取得する
   Controller controller;
-  ReceiveErrorCode error = im.receive(controller);
-  if (error != ReceiveErrorCode::SUCCESS) {
-    return;
-  }
+  im.receiveUntil(controller);
 
   // タイマーをリセットする
   MsTimer2::start();
@@ -79,4 +73,5 @@ void loop() {
 
   // 受信成功したことをコントローラーに知らせる
   im.send(CONNECT_SUCCESS);
+  delay(IM_SEND_INTERVAL);
 }
