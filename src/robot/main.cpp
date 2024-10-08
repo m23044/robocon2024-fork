@@ -73,5 +73,4 @@ void loop() {
 
   // 受信成功したことをコントローラーに知らせる
   im.send(CONNECT_SUCCESS);
-  delay(IM_SEND_INTERVAL);
 }
