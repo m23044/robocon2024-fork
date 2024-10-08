@@ -52,7 +52,7 @@ void setup() {
 void loop() {
   // ボタンの状態を取得する
   Controller controller;
-  im.receiveUntil(controller);
+  im.receive(controller, true);
 
   // タイマーをリセットする
   MsTimer2::start();

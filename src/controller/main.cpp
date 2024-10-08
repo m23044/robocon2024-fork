@@ -61,11 +61,9 @@ void loop() {
   im.send(controller);
   // これをしないとなぜかランプが点滅しない
   delay(IM_SEND_INTERVAL);
-
   // ロボットからの応答を受信
   char buf[sizeof(CONNECT_SUCCESS)];
-  ReceiveErrorCode code = im.receiveUntil(buf, true);
-  if (code == ReceiveErrorCode::SUCCESS) {
+  if (im.receive(buf)) {
     // ランプを消灯
     digitalWriteFast(CONNECT_LED_PIN, HIGH);
     // タイマーのカウントを最初からやり直す
