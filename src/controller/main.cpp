@@ -58,9 +58,8 @@ void loop() {
   }
 
   // コントローラーの状態をIM920SLを使って送信
-  im.send(controller, ImSender<void>::Mode::WAIT);
-  // これをしないとなぜかランプが点滅しない
-  delay(IM_SEND_INTERVAL);
+  im.send(controller, ImSender<void>::WaitMode::CAREER_SENSE);
+
   // ロボットからの応答を受信
   char buf[sizeof(CONNECT_SUCCESS)];
   if (im.receive(buf, ImReceiver<void>::Mode::NO_WAIT)) {
