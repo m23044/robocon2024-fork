@@ -37,6 +37,13 @@ void emergencyStop() {
   for (auto &motor : motors) {
     motor.stop();
   }
+
+  /*
+  // 各モータに対して停止命令を送る
+  for (int i=0;i<NUM_MOTORS;i++) {
+    motors[i].stop();
+  }
+  */
 }
 
 // 1度だけ実行される
