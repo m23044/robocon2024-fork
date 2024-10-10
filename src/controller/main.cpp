@@ -7,11 +7,12 @@
 
 // #defineでピン番号に別名をつける
 #define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
+#define NUM_MORTOR_BUTTONS NUM_MOTORS * 2 // モータのボタンの数
 
 // ボタンピン番号の配列
-const uint8_t btnPins[NUM_MOTORS * 2] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
-                                         PIN_PD7, PIN_PB0, PIN_PB1, PIN_PB2,
-                                         PIN_PC2, PIN_PC3};
+const uint8_t btnPins[NUM_MORTOR_BUTTONS] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
+                                             PIN_PD7, PIN_PB0, PIN_PB1, PIN_PB2,
+                                             PIN_PC2, PIN_PC3};
 
 // ImSender型のsender変数を宣言し、serial変数で初期化する
 IM920SL im(Serial);
@@ -45,7 +46,7 @@ void loop() {
 
   uint8_t pinNum = 0;
   uint8_t motorNum = 0;
-  while (pinNum < sizeof(btnPins)) {
+  while (pinNum < NUM_MORTOR_BUTTONS) {
     if (!digitalReadFast(btnPins[pinNum])) {
       controller.motors[motorNum] = MotorStateEnum::Forward;
     } else if (!digitalReadFast(btnPins[pinNum + 1])) {
