@@ -58,11 +58,11 @@ void loop() {
   }
 
   // コントローラーの状態をIM920SLを使って送信
-  im.send(controller, ImSender<void>::WaitMode::CAREER_SENSE);
+  im.send(controller, ImSenderMode::CAREER_SENSE);
 
   // ロボットからの応答を受信
   char buf[sizeof(CONNECT_SUCCESS)];
-  bool colonedReceived = im.receive(buf, ImReceiver<void>::Mode::NO_WAIT);
+  bool colonedReceived = im.receive(buf, ImReceiverMode::NO_WAIT);
   if (colonedReceived) {
     // ランプを消灯
     digitalWriteFast(CONNECT_LED_PIN, HIGH);

@@ -52,7 +52,7 @@ void setup() {
 void loop() {
   // ボタンの状態を取得する
   Controller controller;
-  im.receive(controller, ImReceiver<void>::Mode::WAIT);
+  im.receive(controller, ImReceiverMode::WAIT);
 
   // タイマーをリセットする
   MsTimer2::start();
@@ -72,5 +72,5 @@ void loop() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(CONNECT_SUCCESS, ImSender<void>::WaitMode::NO_WAIT);
+  im.send(CONNECT_SUCCESS, ImSenderMode::NO_WAIT);
 }
