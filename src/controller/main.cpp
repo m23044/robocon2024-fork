@@ -6,35 +6,28 @@
 #include <liboshima.h> // liboshima.hを取得
 
 // #defineでピン番号に別名をつける
-#define CONNECT_LED_PIN PIN_PC0 // 受信中のランプのピン番号
 #define NUM_MORTOR_BUTTONS NUM_MOTORS * 2 // モータのボタンの数
 
-// ボタンピン番号の配列
-const uint8_t btnPins[NUM_MORTOR_BUTTONS] = {PIN_PD3, PIN_PD4, PIN_PD5, PIN_PD6,
-                                             PIN_PD7, PIN_PB0, PIN_PB1, PIN_PB2,
-                                             PIN_PC2, PIN_PC3};
+// 通信中に光るランプ
+Led connectLed(PIN_PC0);
+
+Button buttons[NUM_MORTOR_BUTTONS] = {
+    Button(PIN_PD3), Button(PIN_PD4), Button(PIN_PD5), Button(PIN_PD6),
+    Button(PIN_PD7), Button(PIN_PB0), Button(PIN_PB1), Button(PIN_PB2),
+    Button(PIN_PC2), Button(PIN_PC3)};
 
 // ImSender型のsender変数を宣言し、serial変数で初期化する
 IM920SL im(Serial);
 
-// 接続中のランプを消灯する関数
-void onDisconnected() { digitalWriteFast(CONNECT_LED_PIN, LOW); }
+void onTimeOut() { connectLed.off(); }
 
 // 1度だけ実行される
 void setup() {
-  // 各ピンに対しボタンとして使うための設定を行う
-  for (auto pin : btnPins) {
-    pinModeFast(pin, INPUT_PULLUP);
-  }
-
-  // ランプを出力に設定
-  pinModeFast(CONNECT_LED_PIN, OUTPUT);
-
   // IM920SLの初期化
   im.begin();
 
   // 1秒のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_TIMEOUT, onDisconnected);
+  MsTimer2::set(IM_RECEIVE_TIMEOUT, onTimeOut);
   MsTimer2::start();
 }
 
@@ -46,10 +39,11 @@ void loop() {
 
   uint8_t pinNum = 0;
   uint8_t motorNum = 0;
+  
   while (pinNum < NUM_MORTOR_BUTTONS) {
-    if (!digitalReadFast(btnPins[pinNum])) {
+    if (buttons[pinNum].isPressed()) {
       controller.motors[motorNum] = MotorStateEnum::Forward;
-    } else if (!digitalReadFast(btnPins[pinNum + 1])) {
+    } else if (buttons[pinNum + 1].isPressed()) {
       controller.motors[motorNum] = MotorStateEnum::Reverse;
     } else {
       controller.motors[motorNum] = MotorStateEnum::Stop;
@@ -65,8 +59,8 @@ void loop() {
   char buf[sizeof(CONNECT_SUCCESS)];
   bool colonedReceived = im.receive(buf, ImReceiverMode::NO_WAIT);
   if (colonedReceived) {
-    // ランプを消灯
-    digitalWriteFast(CONNECT_LED_PIN, HIGH);
+    // ランプを点灯
+    connectLed.on();
     // タイマーのカウントを最初からやり直す
     MsTimer2::start();
   }
