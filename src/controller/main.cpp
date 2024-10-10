@@ -62,7 +62,8 @@ void loop() {
 
   // ロボットからの応答を受信
   char buf[sizeof(CONNECT_SUCCESS)];
-  if (im.receive(buf, ImReceiver<void>::Mode::NO_WAIT)) {
+  bool colonedReceived = im.receive(buf, ImReceiver<void>::Mode::NO_WAIT);
+  if (colonedReceived) {
     // ランプを消灯
     digitalWriteFast(CONNECT_LED_PIN, HIGH);
     // タイマーのカウントを最初からやり直す
