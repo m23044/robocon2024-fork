@@ -72,5 +72,5 @@ void loop() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(CONNECT_SUCCESS, ImSender<void>::Mode::WAIT);
+  im.send(CONNECT_SUCCESS, ImSender<void>::WaitMode::NO_WAIT);
 }
