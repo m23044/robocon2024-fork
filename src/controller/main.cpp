@@ -20,8 +20,8 @@ IM920SL im(Serial);
 void setup() {
   // IM920SLの初期化
   im.beginSerial();
-  im.attachDataNotReceived([]() { connectLed.off(); });
   im.attachDataReceived([]() { connectLed.on(); });
+  im.attachDataNotReceived([]() { connectLed.off(); });
 }
 
 // 繰り返し実行される
