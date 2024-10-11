@@ -47,14 +47,14 @@ void emergencyStop() {
 // 1度だけ実行される
 void setup() {
   im.beginSerial();
-  im.attachDataNotReceived(emergencyStop);
+  im.onDataNotReceived(emergencyStop);
 }
 
 // 繰り返し実行される
 void loop() {
   // ボタンの状態を取得する
   Controller controller;
-  im.receive(controller, ImReceiverMode::WAIT);
+  im.receive(controller, ImReceiveMode::WAIT);
 
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
     switch (controller.motors[i]) {
@@ -71,5 +71,5 @@ void loop() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(CONNECT_SUCCESS, ImSenderMode::NO_WAIT);
+  im.send(CONNECT_SUCCESS, ImSendMode::NO_WAIT);
 }
