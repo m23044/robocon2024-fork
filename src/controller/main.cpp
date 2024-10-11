@@ -22,9 +22,9 @@ void setup() {
   // IM920SLの初期化
   im.beginSerial();
   // データ受信時にconnectLedを点灯させるコールバック関数を設定
-  im.attachDataReceived([]() { connectLed.on(); });
+  im.onDataReceived([]() { connectLed.on(); });
   // データ未受信時にconnectLedを消灯させるコールバック関数を設定
-  im.attachDataNotReceived([]() { connectLed.off(); });
+  im.onDataNotReceived([]() { connectLed.off(); });
 }
 
 // loop関数はプログラムが終了するまで繰り返し実行される
