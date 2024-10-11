@@ -1,5 +1,3 @@
-#include <Arduino.h>
-#include <MsTimer2.h>
 #include <controller/Controller.h>
 #include <liboshima.h>
 
@@ -41,11 +39,8 @@ void emergencyStop() {
 
 // 1度だけ実行される
 void setup() {
-  // 0.5秒のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_TIMEOUT, emergencyStop);
-  MsTimer2::start();
-  // 初期化
-  im.begin();
+  im.beginSerial();
+  im.attachDataNotReceived(emergencyStop);
 }
 
 // 繰り返し実行される
@@ -53,9 +48,6 @@ void loop() {
   // ボタンの状態を取得する
   Controller controller;
   im.receive(controller, ImReceiverMode::WAIT);
-
-  // タイマーをリセットする
-  MsTimer2::start();
 
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
     switch (controller.motors[i]) {

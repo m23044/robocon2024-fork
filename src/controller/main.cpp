@@ -1,9 +1,6 @@
 // 他のファイルのプログラムを取得する
 #include "Controller.h" // Controller.hを取得
-#include <Arduino.h>
-#include <MsTimer2.h> // MsTimer2.hを取得
-#include <digitalWriteFast.h>
-#include <liboshima.h> // liboshima.hを取得
+#include <liboshima.h>  // liboshima.hを取得
 
 // #defineでピン番号に別名をつける
 #define NUM_MORTOR_BUTTONS NUM_MOTORS * 2 // モータのボタンの数
@@ -19,16 +16,12 @@ Button buttons[NUM_MORTOR_BUTTONS] = {
 // ImSender型のsender変数を宣言し、serial変数で初期化する
 IM920SL im(Serial);
 
-void onTimeOut() { connectLed.off(); }
-
 // 1度だけ実行される
 void setup() {
   // IM920SLの初期化
-  im.begin();
-
-  // 1秒のタイマーを設定
-  MsTimer2::set(IM_RECEIVE_TIMEOUT, onTimeOut);
-  MsTimer2::start();
+  im.beginSerial();
+  im.attachDataNotReceived([]() { connectLed.off(); });
+  im.attachDataReceived([]() { connectLed.on(); });
 }
 
 // 繰り返し実行される
@@ -39,7 +32,7 @@ void loop() {
 
   uint8_t pinNum = 0;
   uint8_t motorNum = 0;
-  
+
   while (pinNum < NUM_MORTOR_BUTTONS) {
     if (buttons[pinNum].isPressed()) {
       controller.motors[motorNum] = MotorStateEnum::Forward;
@@ -57,11 +50,5 @@ void loop() {
 
   // ロボットからの応答を受信
   char buf[sizeof(CONNECT_SUCCESS)];
-  bool colonedReceived = im.receive(buf, ImReceiverMode::NO_WAIT);
-  if (colonedReceived) {
-    // ランプを点灯
-    connectLed.on();
-    // タイマーのカウントを最初からやり直す
-    MsTimer2::start();
-  }
+  im.receive(buf, ImReceiverMode::NO_WAIT);
 }
