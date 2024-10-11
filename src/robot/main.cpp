@@ -51,13 +51,13 @@ void loop() {
 
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
     switch (controller.motors[i]) {
-    case MotorStateEnum::Forward:
+    case MotorStateEnum::FORWARD:
       motors[i].forward();
       break;
-    case MotorStateEnum::Reverse:
+    case MotorStateEnum::REVERSE:
       motors[i].reverse();
       break;
-    case MotorStateEnum::Stop:
+    case MotorStateEnum::STOP:
       motors[i].stop();
       break;
     }

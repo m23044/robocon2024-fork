@@ -35,11 +35,11 @@ void loop() {
 
   while (pinNum < NUM_MORTOR_BUTTONS) {
     if (buttons[pinNum].isPressed()) {
-      controller.motors[motorNum] = MotorStateEnum::Forward;
+      controller.motors[motorNum] = MotorStateEnum::FORWARD;
     } else if (buttons[pinNum + 1].isPressed()) {
-      controller.motors[motorNum] = MotorStateEnum::Reverse;
+      controller.motors[motorNum] = MotorStateEnum::REVERSE;
     } else {
-      controller.motors[motorNum] = MotorStateEnum::Stop;
+      controller.motors[motorNum] = MotorStateEnum::STOP;
     }
     pinNum += 2;
     motorNum++;
