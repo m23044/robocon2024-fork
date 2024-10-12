@@ -79,5 +79,6 @@ void loop() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(0xDEADBEEF, ImSendMode::NO_WAIT);
+  // サイズが1バイトより大きいと何故かコントローラー側で受信できないため、1バイトのデータを送信
+  im.send(0xFF, ImSendMode::NO_WAIT);
 }
