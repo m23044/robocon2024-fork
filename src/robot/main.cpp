@@ -1,5 +1,5 @@
-#include <controller/Controller.h>
-#include <liboshima.h>
+#include <controller/Controller.h> // コントローラーのヘッダーファイルをインクルード
+#include <liboshima.h> // ライブラリのヘッダーファイルをインクルード
 
 /*
   int型の配列を作成する場合、以下のようにする。
@@ -21,6 +21,7 @@
 
   ※NonSpeedAdjustableはモータドライバのことで、2つのピンを指定することでモータを制御することができる。※
 */
+// モータの配列を初期化
 NonSpeedAdjustable motors[NUM_MOTORS] = {
     NonSpeedAdjustable(PIN_PD2, PIN_PD4), NonSpeedAdjustable(PIN_PD7, PIN_PB0),
     NonSpeedAdjustable(PIN_PC3, PIN_PC2), NonSpeedAdjustable(PIN_PC1, PIN_PC0),
@@ -29,40 +30,55 @@ NonSpeedAdjustable motors[NUM_MOTORS] = {
 // im920SLを使用するための変数を作成する
 IM920SL im(Serial);
 
-// 一定時間コントローラーからデータを受信しなかった場合に実行される
+// 一定時間コントローラーからデータを受信しなかった場合に実行される関数
 void emergencyStop() {
   // 各モータに対して停止命令を送る
   for (auto &motor : motors) {
     motor.stop();
   }
+
+  /* これと同じ意味
+  // 各モータに対して停止命令を送る
+  for (int i = 0; i < NUM_MOTORS; i++) {
+    motors[i].stop();
+  }
+  */
 }
 
-// 1度だけ実行される
+// プログラム開始時に1度だけ実行される関数
 void setup() {
+  // IM920SLのシリアル通信を初期化
   im.beginSerial();
-  im.attachDataNotReceived(emergencyStop);
+  // データ未受信時にemergencyStop関数を実行するよう設定
+  im.onDataNotReceived(emergencyStop);
 }
 
-// 繰り返し実行される
+// プログラムが終了するまで繰り返し実行される関数
 void loop() {
-  // ボタンの状態を取得する
+  // コントローラーの状態を取得するためのインスタンスを作成
   Controller controller;
-  im.receive(controller, ImReceiverMode::WAIT);
+  // コントローラーからのデータを受信
+  im.receive(&controller, ImReceiveMode::WAIT);
 
+  // 各モータの状態を更新
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
     switch (controller.motors[i]) {
     case MotorStateEnum::FORWARD:
+      // モータを前進させる
       motors[i].forward();
       break;
     case MotorStateEnum::REVERSE:
+      // モータを後退させる
       motors[i].reverse();
       break;
     case MotorStateEnum::STOP:
+      // モータを停止させる
       motors[i].stop();
       break;
     }
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(CONNECT_SUCCESS, ImSenderMode::NO_WAIT);
+  // サイズが1バイトより大きいと何故かコントローラー側で受信できないため、1バイトのデータを送信
+  im.send(0xFF, ImSendMode::NO_WAIT);
 }
