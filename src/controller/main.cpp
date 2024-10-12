@@ -58,6 +58,6 @@ void loop() {
   // コントローラーの状態をIM920SLを使って送信
   im.send(controller, ImSendMode::CAREER_SENSE);
 
-  // ロボットからの応答を受信
+  // データを受信し、受信したデータを読み捨てる
   im.receive<NullType>(nullptr, ImReceiveMode::NO_WAIT);
 }
