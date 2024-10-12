@@ -59,5 +59,5 @@ void loop() {
   im.send(controller, ImSendMode::CAREER_SENSE);
 
   // ロボットからの応答を受信
-  im.receive<nullptr_t>(nullptr, ImReceiveMode::NO_WAIT);
+  im.receive<void>(nullptr, ImReceiveMode::NO_WAIT);
 }
