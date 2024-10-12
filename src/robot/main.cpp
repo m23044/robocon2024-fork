@@ -37,7 +37,7 @@ void emergencyStop() {
     motor.stop();
   }
 
-  /*これと同じ意味
+  /* これと同じ意味
   // 各モータに対して停止命令を送る
   for (int i = 0; i < NUM_MOTORS; i++) {
     motors[i].stop();
