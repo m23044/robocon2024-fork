@@ -58,7 +58,7 @@ void loop() {
   // コントローラーの状態を取得するためのインスタンスを作成
   Controller controller;
   // コントローラーからのデータを受信
-  im.receive(controller, ImReceiveMode::WAIT);
+  im.receive(&controller, ImReceiveMode::WAIT);
 
   // 各モータの状態を更新
   for (uint8_t i = 0; i < NUM_MOTORS; i++) {
@@ -79,5 +79,5 @@ void loop() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  im.send(CONNECT_SUCCESS, ImSendMode::NO_WAIT);
+  im.send(0xDEADBEEF, ImSendMode::NO_WAIT);
 }

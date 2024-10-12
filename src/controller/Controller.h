@@ -2,9 +2,6 @@
 
 #include <liboshima.h>
 
-// ロボットとの接続が成功したことを示す文字列
-#define CONNECT_SUCCESS "!"
-
 // モーターの数を定義
 #define NUM_MOTORS 5
 
