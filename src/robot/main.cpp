@@ -1,5 +1,6 @@
-#include <controller/Controller.h> // コントローラーのヘッダーファイルをインクルード
-#include <liboshima.h> // ライブラリのヘッダーファイルをインクルード
+#include <Arduino.h> // setup, loop関数を呼び出してくれるライブラリを取得
+#include <controller/Controller.h> // src/controller/Controller.hを取得
+#include <liboshima.h> // platformio.iniのlib_depsで指定したライブラリを取得
 
 /*
   int型の配列を作成する場合、以下のようにする。
@@ -21,7 +22,7 @@
 
   ※NonSpeedAdjustableはモータドライバのことで、2つのピンを指定することでモータを制御することができる。※
 */
-// モータの配列を初期化
+// モータ配列を作成
 NonSpeedAdjustable motors[NUM_MOTORS] = {
     NonSpeedAdjustable(PIN_PD2, PIN_PD4), NonSpeedAdjustable(PIN_PD7, PIN_PB0),
     NonSpeedAdjustable(PIN_PC3, PIN_PC2), NonSpeedAdjustable(PIN_PC1, PIN_PC0),
@@ -61,19 +62,19 @@ void loop() {
   im.receive(&controller, ImReceiveMode::WAIT);
 
   // 各モータの状態を更新
-  for (uint8_t i = 0; i < NUM_MOTORS; i++) {
-    switch (controller.motors[i]) {
+  for (uint8_t motorNum = 0; motorNum < NUM_MOTORS; motorNum++) {
+    switch (controller.motors[motorNum]) {
     case MotorStateEnum::FORWARD:
       // モータを前進させる
-      motors[i].forward();
+      motors[motorNum].forward();
       break;
     case MotorStateEnum::REVERSE:
       // モータを後退させる
-      motors[i].reverse();
+      motors[motorNum].reverse();
       break;
     case MotorStateEnum::STOP:
       // モータを停止させる
-      motors[i].stop();
+      motors[motorNum].stop();
       break;
     }
   }

@@ -1,6 +1,7 @@
 // 他のファイルのプログラムを取得する
-#include "Controller.h" // Controller.hを取得
-#include <liboshima.h>  // liboshima.hを取得
+#include "Controller.h" // 同じディレクトリにあるController.hを取得
+#include <Arduino.h> // setup, loop関数を呼び出してくれるライブラリを取得
+#include <liboshima.h> // platformio.iniのlib_depsで指定したライブラリを取得
 
 // #defineでピン番号に別名をつける
 #define NUM_MORTOR_BUTTONS NUM_MOTORS * 2 // モータのボタンの数
@@ -30,19 +31,19 @@ void setup() {
 // loop関数はプログラムが終了するまで繰り返し実行される
 void loop() {
   // ロボットにコントローラーの状態を送信するための準備
-  // コントローラーのインスタンスを作成
+  // Controller型のcontroller変数を宣言
   Controller controller;
 
-  // ボタンのピン番号とモーター番号を初期化
-  uint8_t pinNum = 0;
+  // ボタンのボタン番号とモーター番号を初期化
+  uint8_t buttonNum = 0;
   uint8_t motorNum = 0;
 
   // 各ボタンの状態をチェックし、対応するモーターの状態を更新
-  while (pinNum < NUM_MORTOR_BUTTONS) {
-    if (buttons[pinNum].isPressed()) {
+  while (buttonNum < NUM_MORTOR_BUTTONS) {
+    if (buttons[buttonNum].isPressed()) {
       // ボタンが押されている場合、モーターを前進状態に設定
       controller.motors[motorNum] = MotorStateEnum::FORWARD;
-    } else if (buttons[pinNum + 1].isPressed()) {
+    } else if (buttons[buttonNum + 1].isPressed()) {
       // 別のボタンが押されている場合、モーターを後退状態に設定
       controller.motors[motorNum] = MotorStateEnum::REVERSE;
     } else {
@@ -50,12 +51,12 @@ void loop() {
       controller.motors[motorNum] = MotorStateEnum::STOP;
     }
     // 次のボタンペアに進む
-    pinNum += 2;
+    buttonNum += 2;
     // 次のモーターに進む
     motorNum++;
   }
 
-  // コントローラーの状態をIM920SLを使って送信
+  // コントローラーの状態をIM920SLを使って送信（delayあり）
   im.send(controller, ImSendMode::CAREER_SENSE);
 
   // データを受信し、受信したデータを読み捨てる
