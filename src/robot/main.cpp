@@ -61,19 +61,19 @@ void loop() {
   im.receive(&controller, ImReceiveMode::WAIT);
 
   // 各モータの状態を更新
-  for (uint8_t i = 0; i < NUM_MOTORS; i++) {
-    switch (controller.motors[i]) {
+  for (uint8_t motorNum = 0; motorNum < NUM_MOTORS; motorNum++) {
+    switch (controller.motors[motorNum]) {
     case MotorStateEnum::FORWARD:
       // モータを前進させる
-      motors[i].forward();
+      motors[motorNum].forward();
       break;
     case MotorStateEnum::REVERSE:
       // モータを後退させる
-      motors[i].reverse();
+      motors[motorNum].reverse();
       break;
     case MotorStateEnum::STOP:
       // モータを停止させる
-      motors[i].stop();
+      motors[motorNum].stop();
       break;
     }
   }

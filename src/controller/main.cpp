@@ -34,15 +34,15 @@ void loop() {
   Controller controller;
 
   // ボタンのピン番号とモーター番号を初期化
-  uint8_t pinNum = 0;
+  uint8_t buttonNum = 0;
   uint8_t motorNum = 0;
 
   // 各ボタンの状態をチェックし、対応するモーターの状態を更新
-  while (pinNum < NUM_MORTOR_BUTTONS) {
-    if (buttons[pinNum].isPressed()) {
+  while (buttonNum < NUM_MORTOR_BUTTONS) {
+    if (buttons[buttonNum].isPressed()) {
       // ボタンが押されている場合、モーターを前進状態に設定
       controller.motors[motorNum] = MotorStateEnum::FORWARD;
-    } else if (buttons[pinNum + 1].isPressed()) {
+    } else if (buttons[buttonNum + 1].isPressed()) {
       // 別のボタンが押されている場合、モーターを後退状態に設定
       controller.motors[motorNum] = MotorStateEnum::REVERSE;
     } else {
@@ -50,7 +50,7 @@ void loop() {
       controller.motors[motorNum] = MotorStateEnum::STOP;
     }
     // 次のボタンペアに進む
-    pinNum += 2;
+    buttonNum += 2;
     // 次のモーターに進む
     motorNum++;
   }
