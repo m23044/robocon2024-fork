@@ -1,6 +1,7 @@
 // 他のファイルのプログラムを取得する
-#include "Controller.h" // Controller.hを取得
-#include <liboshima.h>  // liboshima.hを取得
+#include "Controller.h" // 同じディレクトリにあるController.hを取得
+#include <Arduino.h> // setup, loop関数を呼び出してくれるライブラリを取得
+#include <liboshima.h> // platformio.iniのlib_depsで指定したライブラリを取得
 
 // #defineでピン番号に別名をつける
 #define NUM_MORTOR_BUTTONS NUM_MOTORS * 2 // モータのボタンの数
@@ -30,10 +31,10 @@ void setup() {
 // loop関数はプログラムが終了するまで繰り返し実行される
 void loop() {
   // ロボットにコントローラーの状態を送信するための準備
-  // コントローラーのインスタンスを作成
+  // Controller型のcontroller変数を宣言
   Controller controller;
 
-  // ボタンのピン番号とモーター番号を初期化
+  // ボタンのボタン番号とモーター番号を初期化
   uint8_t buttonNum = 0;
   uint8_t motorNum = 0;
 
@@ -55,7 +56,7 @@ void loop() {
     motorNum++;
   }
 
-  // コントローラーの状態をIM920SLを使って送信
+  // コントローラーの状態をIM920SLを使って送信（delayあり）
   im.send(controller, ImSendMode::CAREER_SENSE);
 
   // データを受信し、受信したデータを読み捨てる
