@@ -4,7 +4,8 @@
 #include <liboshima.h> // platformio.iniのlib_depsで指定したライブラリを取得
 
 // #defineでピン番号に別名をつける
-#define NUM_MORTOR_BUTTONS NUM_MOTORS * 2 // モータのボタンの数
+// モータのボタンの数
+#define NUM_MORTOR_BUTTONS NUM_MOTORS * 2
 
 // 通信中に光るランプを定義
 Led connectLed(PIN_PC0);
