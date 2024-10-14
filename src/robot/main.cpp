@@ -40,7 +40,7 @@ void emergencyStop() {
 
   /* これと同じ意味
   // 各モータに対して停止命令を送る
-  for (int i = 0; i < NUM_MOTORS; i++) {
+  for (int i = 0; i < NUM_MOTOR_BUTTONS; i++) {
     motors[i].stop();
   }
   */
