@@ -63,16 +63,16 @@ void loop() {
 
   // 各モータの状態を更新
   for (uint8_t motorNum = 0; motorNum < NUM_MOTORS; motorNum++) {
-    switch (controller.motors[motorNum]) {
-    case MotorStateEnum::FORWARD:
+    switch (controller.motorButtons[motorNum]) {
+    case MotorButtonState::FORWARD:
       // モータを前進させる
       motors[motorNum].forward();
       break;
-    case MotorStateEnum::REVERSE:
+    case MotorButtonState::REVERSE:
       // モータを後退させる
       motors[motorNum].reverse();
       break;
-    case MotorStateEnum::STOP:
+    case MotorButtonState::STOP:
       // モータを停止させる
       motors[motorNum].stop();
       break;

@@ -42,13 +42,13 @@ void loop() {
   while (buttonNum < NUM_MORTOR_BUTTONS) {
     if (buttons[buttonNum].isPressed()) {
       // ボタンが押されている場合、モーターを前進状態に設定
-      controller.motors[motorNum] = MotorStateEnum::FORWARD;
+      controller.motorButtons[motorNum] = MotorButtonState::FORWARD;
     } else if (buttons[buttonNum + 1].isPressed()) {
       // 別のボタンが押されている場合、モーターを後退状態に設定
-      controller.motors[motorNum] = MotorStateEnum::REVERSE;
+      controller.motorButtons[motorNum] = MotorButtonState::REVERSE;
     } else {
       // どちらのボタンも押されていない場合、モーターを停止状態に設定
-      controller.motors[motorNum] = MotorStateEnum::STOP;
+      controller.motorButtons[motorNum] = MotorButtonState::STOP;
     }
     // 次のボタンペアに進む
     buttonNum += 2;
