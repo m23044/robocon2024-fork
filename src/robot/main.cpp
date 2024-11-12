@@ -80,6 +80,6 @@ void loop() {
   }
 
   // 受信成功したことをコントローラーに知らせる
-  // CAREER_SENSEモードで送信
-  im.send(0xFF, ImSendMode::CAREER_SENSE);
+  // 1byteでないと送信できない
+  im.send(static_cast<uint8_t>(0xFF), ImSendMode::NO_WAIT);
 }
